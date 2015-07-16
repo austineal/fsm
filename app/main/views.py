@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request, current_app
+from flask.ext.login import login_required
 from .forms import AddStudentForm, AddInstructorForm, AddFlightLessonForm, AddSkillForm, AddFlightForm, AddCheckrideForm, PassRateForm
 from ..models import Student, Instructor, FlightLesson, Skill, Flight, Checkride
 from .. import db
@@ -6,11 +7,13 @@ from . import main
 
 
 @main.route('/')
+@login_required
 def index():
     return render_template('index.html')
 
 
 @main.route('/add/student', methods=['GET', 'POST'])
+@login_required
 def add_student():
     form = AddStudentForm()
     if form.validate_on_submit():
@@ -29,6 +32,7 @@ def add_student():
 
 
 @main.route('/view/students')
+@login_required
 def view_students():
     page = request.args.get('page', 1, type=int)
     pagination = Student.query.order_by(Student.last_name, Student.first_name).paginate(
@@ -39,6 +43,7 @@ def view_students():
 
 
 @main.route('/view/students/<student_id>', methods=['GET', 'POST'])
+@login_required
 def view_student(student_id):
     form = AddStudentForm()
     student = Student.query.filter_by(id=student_id).first()
@@ -67,6 +72,7 @@ def view_student(student_id):
 
 
 @main.route('/add/instructor', methods=['GET', 'POST'])
+@login_required
 def add_instructor():
     form = AddInstructorForm()
     if form.validate_on_submit():
@@ -79,6 +85,7 @@ def add_instructor():
 
 
 @main.route('/view/instructors')
+@login_required
 def view_instructors():
     page = request.args.get('page', 1, type=int)
     pagination = Instructor.query.order_by(Instructor.last_name, Instructor.first_name).paginate(
@@ -89,6 +96,7 @@ def view_instructors():
 
 
 @main.route('/view/instructors/<instructor_id>', methods=['GET', 'POST'])
+@login_required
 def view_instructor(instructor_id):
     form = AddInstructorForm()
     instructor = Instructor.query.filter_by(id=instructor_id).first()
@@ -105,6 +113,7 @@ def view_instructor(instructor_id):
 
 
 @main.route('/add/lesson', methods=['GET', 'POST'])
+@login_required
 def add_flight_lesson():
     form = AddFlightLessonForm()
     if form.validate_on_submit():
@@ -117,6 +126,7 @@ def add_flight_lesson():
 
 
 @main.route('/view/lessons')
+@login_required
 def view_flight_lessons():
     page = request.args.get('page', 1, type=int)
     pagination = FlightLesson.query.order_by(FlightLesson.number).paginate(
@@ -127,6 +137,7 @@ def view_flight_lessons():
 
 
 @main.route('/view/lessons/<lesson_id>', methods=['GET', 'POST'])
+@login_required
 def view_flight_lesson(lesson_id):
     form = AddFlightLessonForm()
     lesson = FlightLesson.query.filter_by(id=lesson_id).first()
@@ -143,6 +154,7 @@ def view_flight_lesson(lesson_id):
 
 
 @main.route('/add/skill', methods=['GET', 'POST'])
+@login_required
 def add_skill():
     form = AddSkillForm()
     if form.validate_on_submit():
@@ -154,6 +166,7 @@ def add_skill():
 
 
 @main.route('/view/skills')
+@login_required
 def view_skills():
     page = request.args.get('page', 1, type=int)
     pagination = Skill.query.order_by(Skill.id).paginate(
@@ -164,6 +177,7 @@ def view_skills():
 
 
 @main.route('/view/skills/<skill_id>', methods=['GET', 'POST'])
+@login_required
 def view_skill(skill_id):
     form = AddSkillForm()
     skill = Skill.query.filter_by(id=skill_id).first()
@@ -178,6 +192,7 @@ def view_skill(skill_id):
 
 
 @main.route('/add/flight', methods=['GET', 'POST'])
+@login_required
 def add_flight():
     form = AddFlightForm()
     if form.validate_on_submit():
@@ -194,6 +209,7 @@ def add_flight():
 
 
 @main.route('/view/flights')
+@login_required
 def view_flights():
     page = request.args.get('page', 1, type=int)
     pagination = Flight.query.order_by(Flight.date).paginate(
@@ -204,6 +220,7 @@ def view_flights():
 
 
 @main.route('/view/flight/<flight_id>', methods=['GET', 'POST'])
+@login_required
 def view_flight(flight_id):
     form = AddFlightForm()
     flight = Flight.query.filter_by(id=flight_id).first()
@@ -225,6 +242,7 @@ def view_flight(flight_id):
 
 
 @main.route('/add/checkride', methods=['GET', 'POST'])
+@login_required
 def add_checkride():
     form = AddCheckrideForm()
     if form.validate_on_submit():
@@ -240,6 +258,7 @@ def add_checkride():
 
 
 @main.route('/view/checkrides')
+@login_required
 def view_checkrides():
     page = request.args.get('page', 1, type=int)
     pagination = Checkride.query.order_by(Checkride.date).paginate(
@@ -250,6 +269,7 @@ def view_checkrides():
 
 
 @main.route('/view/checkride/<checkride_id>', methods=['GET', 'POST'])
+@login_required
 def view_checkride(checkride_id):
     form = AddCheckrideForm()
     checkride = Checkride.query.filter_by(id=checkride_id).first()
@@ -269,6 +289,7 @@ def view_checkride(checkride_id):
 
 
 @main.route('/report/pass_rate', methods=['GET', 'POST'])
+@login_required
 def pass_rate_report():
     form = PassRateForm()
     if form.validate_on_submit():
