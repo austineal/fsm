@@ -26,6 +26,7 @@ def add_student():
                           email_address=form.email_address.data,
                           active=form.active.data)
         db.session.add(student)
+        db.session.commit()
         flash('New student added.')
         return redirect(url_for('.index'))
     return render_template('add_student.html', form=form)
@@ -79,6 +80,7 @@ def add_instructor():
         instructor = Instructor(first_name=form.first_name.data,
                                 last_name=form.last_name.data)
         db.session.add(instructor)
+        db.session.commit()
         flash('New instructor added.')
         return redirect(url_for('.index'))
     return render_template('add_instructor.html', form=form)
@@ -120,6 +122,7 @@ def add_flight_lesson():
         lesson = FlightLesson(number=form.number.data,
                               name=form.name.data)
         db.session.add(lesson)
+        db.session.commit()
         flash('New flight lesson added.')
         return redirect(url_for('.index'))
     return render_template('add_flight_lesson.html', form=form)
@@ -160,6 +163,7 @@ def add_skill():
     if form.validate_on_submit():
         skill = Skill(name=form.name.data)
         db.session.add(skill)
+        db.session.commit()
         flash('New skill added.')
         return redirect(url_for('.index'))
     return render_template('add_skill.html', form=form)
@@ -203,6 +207,7 @@ def add_flight():
         flight.flight_time = form.flight_time.data
         flight.flight_lesson_id = form.flight_lesson.data
         db.session.add(flight)
+        db.session.commit()
         flash('New flight added.')
         return redirect(url_for('.index'))
     return render_template('add_flight.html', form=form)
@@ -231,6 +236,7 @@ def view_flight(flight_id):
         flight.flight_time = form.flight_time.data
         flight.flight_lesson_id = form.flight_lesson.data
         db.session.add(flight)
+        db.session.commit()
         flash('Flight updated.')
         return redirect(url_for('.view_flights'))
     form.date.data = flight.date
@@ -252,6 +258,7 @@ def add_checkride():
         checkride.instructor_id = form.instructor.data
         checkride.success = form.success.data
         db.session.add(checkride)
+        db.session.commit()
         flash('New checkride added.')
         return redirect(url_for('.index'))
     return render_template('add_checkride.html', form=form)
@@ -279,6 +286,7 @@ def view_checkride(checkride_id):
         checkride.instructor_id = form.instructor.data
         checkride.success = form.success.data
         db.session.add(checkride)
+        db.session.commit()
         flash('Checkride updated.')
         return redirect(url_for('.view_checkrides'))
     form.date.data = checkride.date
