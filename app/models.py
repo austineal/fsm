@@ -148,6 +148,12 @@ class Checkride(db.Model):
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'))
     success = db.Column(db.Boolean)
 
+    def __repr__(self):
+        return '<Checkride id=%r, date=%r, student_id=%r, instructor_id=%r, success=%r>' % (self.id, self.date,
+                                                                                            self.student_id,
+                                                                                            self.instructor_id,
+                                                                                            self.success)
+
 
 @login_manager.user_loader
 def load_user(user_id):

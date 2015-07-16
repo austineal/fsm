@@ -284,7 +284,10 @@ def view_checkride(checkride_id):
         checkride.date = form.date.data
         checkride.student_id = form.student.data
         checkride.instructor_id = form.instructor.data
-        checkride.success = form.success.data
+        if form.success.raw_data[0] == 'False':
+            checkride.success = False
+        else:
+            checkride.success = True
         db.session.add(checkride)
         db.session.commit()
         flash('Checkride updated.')

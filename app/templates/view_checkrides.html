@@ -30,7 +30,7 @@
             <td>{{ checkride.date }}</td>
             <td>{{ checkride.student.last_name }}, {{ checkride.student.first_name }}</td>
             <td>{{ checkride.instructor.last_name }}, {{  checkride.instructor.first_name }}</td>
-            <td>{% if checkride.success %}Pass{% else %}Fail{% endif %}</td>
+            <td>{% if checkride.success == True %}Pass{% else %}Fail{% endif %}</td>
             <td><a href="/view/checkride/{{ checkride.id }}">view/edit details</a></td>
         </tr>
         {%  endfor %}
