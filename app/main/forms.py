@@ -1,7 +1,7 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, SelectField, BooleanField, IntegerField, FloatField, RadioField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import Required
+from wtforms.validators import Required, Optional
 from ..models import State, Student, Instructor, Skill, FlightLesson
 
 
@@ -50,18 +50,18 @@ class AddFlightForm(Form):
     instructor = SelectField('Instructor', coerce=int)
     flight_time = FloatField('Time this Lesson')
     flight_lesson = SelectField('Lesson', coerce=int)
-    landings_day = FloatField('Landings Day')
-    landings_night = FloatField('Landings Night')
-    instrument = FloatField('Instrument')
-    night = FloatField('Night')
-    solo_cross_country = FloatField('Solo Cross Country')
-    solo_local = FloatField('Solo Local')
-    dual_cross_country = FloatField('Dual Cross Country')
-    dual_local = FloatField('Dual Local')
-    aircraft_registration = StringField('Aircraft Registration')
-    type_aircraft = StringField('Type Aircraft')
-    briefing_time = FloatField('Briefing Time')
-    flight_training_device = StringField('Flight Training Device')
+    landings_day = FloatField('Landings Day', validators=[Optional()])
+    landings_night = FloatField('Landings Night', validators=[Optional()])
+    instrument = FloatField('Instrument', validators=[Optional()])
+    night = FloatField('Night', validators=[Optional()])
+    solo_cross_country = FloatField('Solo Cross Country', validators=[Optional()])
+    solo_local = FloatField('Solo Local', validators=[Optional()])
+    dual_cross_country = FloatField('Dual Cross Country', validators=[Optional()])
+    dual_local = FloatField('Dual Local', validators=[Optional()])
+    aircraft_registration = StringField('Aircraft Registration', validators=[Optional()])
+    type_aircraft = StringField('Type Aircraft', validators=[Optional()])
+    briefing_time = FloatField('Briefing Time', validators=[Optional()])
+    flight_training_device = StringField('Flight Training Device', validators=[Optional()])
     add_flight = SubmitField('Save Flight')
 
     def __init__(self, *args, **kwargs):
