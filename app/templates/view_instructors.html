@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Flight School Manager - View Instructors{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Students</h1>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last name
+        </th>
+        <th>
+            Actions
+        </th>
+        </thead>
+        <tbody>
+        {%  for instructor in instructors %}
+        <tr>
+            <td>{{ instructor.first_name }}</td>
+            <td>{{ instructor.last_name }}</td>
+            <td><a href="/view/instructors/{{ instructor.id }}">view/edit details</a></td>
+        </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+</div>
+{{ macros.pagination_widget(pagination, '.view_instructors') }}
+{% endblock %}

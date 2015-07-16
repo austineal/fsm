@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Flight School Manager - View Skills{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Skills</h1>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <th>
+            Skill Name
+        </th>
+        <th>
+            Actions
+        </th>
+        </thead>
+        <tbody>
+        {%  for skill in skills %}
+        <tr>
+            <td>{{ skill.name }}</td>
+            <td><a href="/view/skills/{{ skill.id }}">view/edit details</a></td>
+        </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+</div>
+{{ macros.pagination_widget(pagination, '.view_skills') }}
+{% endblock %}

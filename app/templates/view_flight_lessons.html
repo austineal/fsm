@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Flight School Manager - View Flight Lessons{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Flight Lessons</h1>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <th>
+            Lesson Number
+        </th>
+        <th>
+            Lesson Name
+        </th>
+        <th>
+            Actions
+        </th>
+        </thead>
+        <tbody>
+        {%  for lesson in lessons %}
+        <tr>
+            <td>{{ lesson.number }}</td>
+            <td>{{ lesson.name }}</td>
+            <td><a href="/view/lessons/{{ lesson.id }}">view/edit details</a></td>
+        </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+</div>
+{{ macros.pagination_widget(pagination, '.view_flight_lessons') }}
+{% endblock %}
