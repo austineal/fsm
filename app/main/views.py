@@ -212,6 +212,16 @@ def view_testtype(testtype_id):
     return render_template('admin/edit_testtype.html', form=form)
 
 
+@main.route('/delete/testtype/<testtype_id>', methods=['GET', 'POST'])
+@login_required
+def delete_test(testtype_id):
+    testtype = TestType.query.filter_by(id=testtype_id).first()
+    db.session.delete(testtype)
+    db.session.commit()
+    flash('Test type deleted.')
+    return redirect(url_for('.view_testtypes'))
+
+
 @main.route('/add/flight', methods=['GET', 'POST'])
 @login_required
 def add_flight():
