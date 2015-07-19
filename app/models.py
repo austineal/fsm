@@ -134,7 +134,31 @@ class Flight(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'))
     flight_time = db.Column(db.Float)
+    ground_time = db.Column(db.Float)
     flight_lesson_id = db.Column(db.Integer, db.ForeignKey('flight_lessons.id'))
+    aircraft_id = db.Column(db.Integer, db.ForeignKey('aircraft.id'))
+    se_dual = db.Column(db.Float)
+    se_solo = db.Column(db.Float)
+    se_pic = db.Column(db.Float)
+    me_dual = db.Column(db.Float)
+    me_pic = db.Column(db.Float)
+    xc_pic_solo = db.Column(db.Float)
+    xc_dual = db.Column(db.Float)
+    night_dual = db.Column(db.Float)
+    night_dual_xc = db.Column(db.Float)
+    night_pic_solo = db.Column(db.Float)
+    se_complex = db.Column(db.Float)
+    instrument_hood = db.Column(db.Float)
+    instrument_actual = db.Column(db.Float)
+    ftd = db.Column(db.Float)
+    pcatd = db.Column(db.Float)
+    ils = db.Column(db.Integer)
+    loc = db.Column(db.Integer)
+    vor = db.Column(db.Integer)
+    rnav_gps = db.Column(db.Integer)
+    ndb = db.Column(db.Integer)
+    landings_day = db.Column(db.Integer)
+    landings_night = db.Column(db.Integer)
 
 
 class Test(db.Model):
@@ -158,6 +182,13 @@ class TestType(db.Model):
 
     def __repr__(self):
         return '<TestType name=%r, scored=%r>' % (self.name, self.scored)
+
+
+class Aircraft(db.Model):
+    __tablename__ = 'aircraft'
+    id = db.Column(db.Integer, primary_key=True)
+    tail_number = db.Column(db.String(10))
+    flights = db.relationship('Flight', backref='aircraft')
 
 
 @login_manager.user_loader
