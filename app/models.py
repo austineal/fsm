@@ -3,11 +3,6 @@ from flask.ext.login import UserMixin
 from . import db, login_manager
 
 
-flights_has_skills = db.Table('flights_has_skills',
-                              db.Column('flight_id', db.Integer, db.ForeignKey('flights.id')),
-                              db.Column('skill_id', db.Integer, db.ForeignKey('skills.id')))
-
-
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
@@ -41,6 +36,13 @@ class User(UserMixin, db.Model):
         return '<User %r>' % self.username
 
 
+class StudentType(db.Model):
+    __tablename__ = 'studenttypes'
+    id = db.Column(db.Integer, primary_key=True)
+    student_type = db.Column(db.String(8))
+    students = db.relationship('Student', backref='student_type')
+
+
 class Student(db.Model):
     __tablename__ = 'students'
     id = db.Column(db.Integer, primary_key=True)
@@ -53,8 +55,12 @@ class Student(db.Model):
     phone_number = db.Column(db.String(16))
     email_address = db.Column(db.String(128))
     active = db.Column(db.Boolean)
+    student_type_id = db.Column(db.Integer, db.ForeignKey('studenttypes.id'))
+    enrollment_start_date = db.Column(db.Date)
+    enrollment_end_date = db.Column(db.Date)
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'))
     flights = db.relationship('Flight', backref='student')
-    checkrides = db.relationship('Checkride', backref='student')
+    tests = db.relationship('Test', backref='student')
 
     @staticmethod
     def generate_fake(count=30):
@@ -86,7 +92,8 @@ class Instructor(db.Model):
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(64))
     flights = db.relationship('Flight', backref='instructor')
-    checkrides = db.relationship('Checkride', backref='instructor')
+    tests = db.relationship('Test', backref='instructor')
+    students = db.relationship('Student', backref='instructor')
 
     @staticmethod
     def generate_fake(count=30):
@@ -120,16 +127,6 @@ class FlightLesson(db.Model):
     flights = db.relationship('Flight', backref='flight_lesson')
 
 
-class Skill(db.Model):
-    __tablename__ = 'skills'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64))
-    flights = db.relationship('Flight',
-                              secondary=flights_has_skills,
-                              backref=db.backref('skills', lazy='dynamic'),
-                              lazy='dynamic')
-
-
 class Flight(db.Model):
     __tablename__ = 'flights'
     id = db.Column(db.Integer, primary_key=True)
@@ -140,19 +137,27 @@ class Flight(db.Model):
     flight_lesson_id = db.Column(db.Integer, db.ForeignKey('flight_lessons.id'))
 
 
-class Checkride(db.Model):
-    __tablename__ = 'checkrides'
+class Test(db.Model):
+    __tablename__ = 'tests'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'))
     success = db.Column(db.Boolean)
+    test_type_id = db.Column(db.Integer, db.ForeignKey('testtypes.id'))
+    score = db.Column(db.Float)
+
+
+class TestType(db.Model):
+    __tablename__ = 'testtypes'
+    id = db.Column(db.Integer, primary_key=True)
+    test_type = db.Column(db.String(32))
+    name = db.Column(db.String(32))
+    scored = db.Column(db.Boolean)
+    tests = db.relationship('Test', backref='test_type')
 
     def __repr__(self):
-        return '<Checkride id=%r, date=%r, student_id=%r, instructor_id=%r, success=%r>' % (self.id, self.date,
-                                                                                            self.student_id,
-                                                                                            self.instructor_id,
-                                                                                            self.success)
+        return '<TestType name=%r, scored=%r>' % (self.name, self.scored)
 
 
 @login_manager.user_loader

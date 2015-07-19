@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Flight School Manager - View Test{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Tests</h1>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <th>
+            Date
+        </th>
+        <th>
+            Student
+        </th>
+        <th>
+            Instructor
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Pass/Fail
+        </th>
+        <th>
+            Score
+        </th>
+        </thead>
+        <tbody>
+        {%  for test in tests %}
+        <tr>
+            <td>{{ test.date }}</td>
+            <td>{{ test.student.last_name }}, {{ test.student.first_name }}</td>
+            <td>{{ test.instructor.last_name }}, {{  test.instructor.first_name }}</td>
+            <td>{{ test.test_type.name }}</td>
+            <td>{% if test.success == True %}Pass{% else %}Fail{% endif %}</td>
+            <td>{% if test.test_type.scored %}{{ test.score }}{% else %}-{% endif %}</td>
+            <td><a href="/view/test/{{ test.id }}">view/edit details</a></td>
+        </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+</div>
+{{ macros.pagination_widget(pagination, '.view_tests') }}
+{% endblock %}
