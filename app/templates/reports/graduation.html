@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flight School Manager - Report - Graduation{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1>Graduation</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <th>
+            Test
+        </th>
+        <th>
+            Pass pate, first attempt
+        </th>
+        <th>
+            Pass rate, any attempt
+        </th>
+        <th>
+            Number of passes, first attempt
+        </th>
+        <th>
+            Number of passes, any attempt
+        </th>
+        <th>
+            Number of fails
+        </th>
+        <th>
+            Average pass score, first attempt
+        </th>
+        <th>
+            Average pass score, any attempt
+        </th>
+        </thead>
+        <tbody>
+        {%  for test in test_stats %}
+        <tr>
+            <td>{{ test[1] }}</td>
+            <td>{{ test[2].pass_rate_first }}</td>
+            <td>{{ test[2].pass_rate_any }}</td>
+            <td>{{ test[2].num_passes_first }}</td>
+            <td>{{ test[2].num_passes_any }}</td>
+            <td>{{ test[2].num_fails }}</td>
+            <td>{{ test[2].avg_score_first }}</td>
+            <td>{{ test[2].avg_score_any }}</td>
+        </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

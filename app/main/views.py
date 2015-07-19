@@ -1,7 +1,11 @@
+from __future__ import division
+
 from datetime import datetime, date
+from collections import defaultdict, namedtuple
+from sqlalchemy import func
 from flask import render_template, flash, redirect, url_for, request, current_app
 from flask.ext.login import login_required
-from .forms import AddStudentForm, AddInstructorForm, AddFlightLessonForm, AddTestTypeForm, AddFlightForm, AddTestForm, PassRateForm, MonthlyStudentEnrollmentForm
+from .forms import AddStudentForm, AddInstructorForm, AddFlightLessonForm, AddTestTypeForm, AddFlightForm, AddTestForm, MonthlyStudentEnrollmentForm
 from ..models import Student, Instructor, FlightLesson, TestType, Flight, Test
 from .. import db
 from . import main
@@ -360,30 +364,77 @@ def monthly_student_enrollment_report():
             latest_start = max(from_date, enrollment_start)
             earliest_end = min(to_date, enrollment_end)
             overlap = (earliest_end - latest_start).days + 1
-            print student.first_name, student.last_name
-            print enrollment_start, enrollment_end
-            print overlap
             if overlap > 0:
                 students.append(student)
 
         num_students = len(students)
 
-        return render_template('reports/monthly_student_enrollment.html', form=form, from_date=from_date,
-                               to_date=to_date, students=students, num_students=num_students)
+        return render_template('reports/monthly_student_enrollment.html', form=form, students=students,
+                               num_students=num_students)
     else:
         return render_template('reports/monthly_student_enrollment.html', form=form)
 
 
-@main.route('/report/pass_rate', methods=['GET', 'POST'])
+@main.route('/report/graduation', methods=['GET', 'POST'])
 @login_required
-def pass_rate_report():
-    form = PassRateForm()
+def graduation_report():
+    form = MonthlyStudentEnrollmentForm()
     if form.validate_on_submit():
         from_date = form.from_date.data
         to_date = form.to_date.data
-        return redirect(url_for('.pass_rate_report', from_date=from_date, to_date=to_date))
-    from_date = request.values.get('from_date')
-    to_date = request.values.get('to_date')
-    form.from_date.data = from_date
-    form.to_date.data = to_date
-    return render_template('pass_rate_report.html', form=form, from_date=from_date, to_date=to_date)
+        student_type_id = form.student_type.data
+        instructor_id = form.instructor.data
+        return redirect(url_for('.graduation_report', from_date=from_date, to_date=to_date,
+                                student_type_id=student_type_id, instructor_id=instructor_id))
+    if 'from_date' in request.values and 'to_date' in request.values:
+        from_date = datetime.strptime(request.values.get('from_date'), '%Y-%m-%d').date()
+        to_date = datetime.strptime(request.values.get('to_date'), '%Y-%m-%d').date()
+        student_type_id = int(request.values.get('student_type_id'))
+        instructor_id = int(request.values.get('instructor_id'))
+        form.from_date.data = from_date
+        form.to_date.data = to_date
+        form.student_type.data = student_type_id
+        form.instructor.data = instructor_id
+
+        tests_per_student = defaultdict(lambda: defaultdict(list))
+        test_statistics = defaultdict(lambda: defaultdict(int))
+
+        tests = Test.query.join(Student).filter(from_date <= Test.date).filter(to_date >= Test.date).order_by(Test.student_id, Test.date)
+        if student_type_id:
+            tests = tests.filter(Student.student_type_id == student_type_id)
+        if instructor_id:
+            tests = tests.filter_by(instructor_id=instructor_id)
+        for test in tests.all():
+            tests_per_student[test.student_id][test.test_type.id, test.test_type.name, test.test_type.scored].append((test.success, test.score))
+
+        for student_id in tests_per_student:
+            for key in tests_per_student[student_id]:
+                test_statistics[key]['num_attempts_first'] += 1
+                test_statistics[key]['num_attempts_any'] += len(tests_per_student[student_id][key])
+                passes = [1 if entry[0] else 0 for entry in tests_per_student[student_id][key]]
+                test_statistics[key]['num_passes_first'] += passes[0]
+                test_statistics[key]['num_passes_any'] += sum(passes)
+                scores = [entry[1] for entry in tests_per_student[student_id][key] if entry[1]]
+                if scores:
+                    test_statistics[key]['sum_score_first'] += scores[0]
+                    test_statistics[key]['sum_score_any'] += sum(scores)
+
+        for key in test_statistics:
+            test_statistics[key]['pass_rate_first'] = '%1.1f%%' % (test_statistics[key]['num_passes_first']*100/test_statistics[key]['num_attempts_first'])
+            test_statistics[key]['pass_rate_any'] = '%1.1f%%' % (test_statistics[key]['num_passes_any']*100/test_statistics[key]['num_attempts_any'])
+            test_statistics[key]['num_fails'] = test_statistics[key]['num_attempts_any'] - test_statistics[key]['num_passes_any']
+            if key[2]:
+                test_statistics[key]['avg_score_first'] = test_statistics[key]['sum_score_first']/test_statistics[key]['num_passes_first']
+                test_statistics[key]['avg_score_any'] = test_statistics[key]['sum_score_any']/test_statistics[key]['num_passes_any']
+            else:
+                test_statistics[key]['avg_score_first'] = '-'
+                test_statistics[key]['avg_score_any'] = '-'
+
+        test_statistics_tuples = []
+        for key, value in test_statistics.items():
+            test_statistics_tuples.append((key[0], key[1], value))
+
+        return render_template('reports/graduation.html', form=form, test_stats=sorted(test_statistics_tuples))
+
+    else:
+        return render_template('reports/graduation.html', form=form)

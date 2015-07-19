@@ -106,12 +106,6 @@ class AddTestForm(Form):
                                   TestType.query.order_by(TestType.id).all()]
 
 
-class PassRateForm(Form):
-    from_date = DateField('From')
-    to_date = DateField('To')
-    get_report = SubmitField('Generate Report')
-
-
 class MonthlyStudentEnrollmentForm(Form):
     today = date.today()
     from_date = DateField('From', default=date(today.year, today.month, 1), validators=[Required()])
