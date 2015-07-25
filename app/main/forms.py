@@ -24,6 +24,8 @@ class AddStudentForm(Form):
     active = BooleanField('Active')
     student_type = SelectField('Student Type', coerce=int)
     instructor = SelectField('Instructor', coerce=int)
+    medical_received = DateField('Medical Received', validators=[Optional()])
+    medical_expires = DateField('Medical Expires', validators=[Optional()])
     add_student = SubmitField('Save Student')
 
     def __init__(self, *args, **kwargs):
@@ -63,7 +65,7 @@ class AddFlightForm(Form):
     me_dual = FloatField('ME Dual', default=0)
     me_pic = FloatField('ME PIC', default=0)
     xc_pic_solo = FloatField('XC PIC Solo', default=0)
-    xc_doal = FloatField('XC Dual', default=0)
+    xc_dual = FloatField('XC Dual', default=0)
     night_dual = FloatField('Night Dual', default=0)
     night_dual_xc = FloatField('Night Dual XC', default=0)
     night_pic_solo = FloatField('Night PIC Solo', default=0)

@@ -31,7 +31,9 @@ def add_student():
                           email_address=form.email_address.data,
                           active=form.active.data,
                           student_type_id=form.student_type.data,
-                          instructor_id=form.instructor.data)
+                          instructor_id=form.instructor.data,
+                          medical_received=form.medical_received,
+                          medical_expires=form.medical_expires)
         db.session.add(student)
         db.session.commit()
         flash('New student added.')
@@ -68,6 +70,8 @@ def view_student(student_id):
         student.active = form.active.data
         student.student_type_id = form.student_type.data
         student.instructor_id = form.instructor.data
+        student.medical_received = form.medical_received.data
+        student.medical_expires = form.medical_expires.data
         db.session.add(student)
         db.session.commit()
         flash('Student updated.')
@@ -84,6 +88,8 @@ def view_student(student_id):
     form.active.data = student.active
     form.student_type.data = student.student_type_id
     form.instructor.data = student.instructor_id
+    form.medical_received.data = student.medical_received
+    form.medical_expires.data = student.medical_expires
     return render_template('edit_student.html', form=form)
 
 
@@ -197,7 +203,7 @@ def view_testtypes():
 
 @main.route('/view/testtype/<testtype_id>', methods=['GET', 'POST'])
 @login_required
-def view_testtype(testtype_id):
+def view_testtype(testtype_itd):
     form = AddTestTypeForm()
     testtype = TestType.query.filter_by(id=testtype_id).first()
     if form.validate_on_submit():
@@ -233,6 +239,30 @@ def add_flight():
         flight.instructor_id = form.instructor.data
         flight.flight_time = form.flight_time.data
         flight.flight_lesson_id = form.flight_lesson.data
+        flight.aircraft_id = form.aircraft.data
+        flight.ground_time = form.ground_time.data
+        flight.se_dual = form.se_dual.data
+        flight.se_solo = form.se_solo.data
+        flight.se_pic = form.se_pic.data
+        flight.me_dual = form.me_dual.data
+        flight.me_pic = form.me_pic.data
+        flight.xc_pic_solo = form.xc_pic_solo.data
+        flight.xc_dual = form.xc_dual.data
+        flight.night_dual = form.night_dual.data
+        flight.night_dual_xc = form.night_dual_xc.data
+        flight.night_pic_solo = form.night_pic_solo.data
+        flight.se_complex = form.se_complex.data
+        flight.instrument_hood = form.instrument_hood.data
+        flight.instrument_actual = form.instrument_actual.data
+        flight.ftd = form.ftd.data
+        flight.pcatd = form.pcatd.data
+        flight.ils = form.ils.data
+        flight.loc = form.loc.data
+        flight.vor = form.vor.data
+        flight.rnav_gps = form.rnav_gps.data
+        flight.ndb = form.ndb.data
+        flight.landings_day = form.landings_day.data
+        flight.landings_night = form.landings_night.data
         db.session.add(flight)
         db.session.commit()
         flash('New flight added.')
@@ -262,6 +292,30 @@ def view_flight(flight_id):
         flight.instructor_id = form.instructor.data
         flight.flight_time = form.flight_time.data
         flight.flight_lesson_id = form.flight_lesson.data
+        flight.aircraft_id = form.aircraft.data
+        flight.ground_time = form.ground_time.data
+        flight.se_dual = form.se_dual.data
+        flight.se_solo = form.se_solo.data
+        flight.se_pic = form.se_pic.data
+        flight.me_dual = form.me_dual.data
+        flight.me_pic = form.me_pic.data
+        flight.xc_pic_solo = form.xc_pic_solo.data
+        flight.xc_dual = form.xc_dual.data
+        flight.night_dual = form.night_dual.data
+        flight.night_dual_xc = form.night_dual_xc.data
+        flight.night_pic_solo = form.night_pic_solo.data
+        flight.se_complex = form.se_complex.data
+        flight.instrument_hood = form.instrument_hood.data
+        flight.instrument_actual = form.instrument_actual.data
+        flight.ftd = form.ftd.data
+        flight.pcatd = form.pcatd.data
+        flight.ils = form.ils.data
+        flight.loc = form.loc.data
+        flight.vor = form.vor.data
+        flight.rnav_gps = form.rnav_gps.data
+        flight.ndb = form.ndb.data
+        flight.landings_day = form.landings_day.data
+        flight.landings_night = form.landings_night.data
         db.session.add(flight)
         db.session.commit()
         flash('Flight updated.')
@@ -271,7 +325,41 @@ def view_flight(flight_id):
     form.instructor.data = flight.instructor_id
     form.flight_time.data = flight.flight_time
     form.flight_lesson.data = flight.flight_lesson_id
+    form.aircraft.data = flight.aircraft_id
+    form.ground_time.data = flight.ground_time
+    form.se_dual.data = flight.se_dual
+    form.se_solo.data = flight.se_solo
+    form.se_pic.data = flight.se_pic
+    form.me_dual.data = flight.me_dual
+    form.me_pic.data = flight.me_pic
+    form.xc_pic_solo.data = flight.xc_pic_solo
+    form.xc_dual.data = flight.xc_dual
+    form.night_dual.data = flight.night_dual
+    form.night_dual_xc.data = flight.night_dual_xc
+    form.night_pic_solo.data = flight.night_pic_solo
+    form.se_complex.data = flight.se_complex
+    form.instrument_hood.data = flight.instrument_hood
+    form.instrument_actual.data = flight.instrument_actual
+    form.ftd.data = flight.ftd
+    form.pcatd.data = flight.pcatd
+    form.ils.data = flight.ils
+    form.loc.data = flight.loc
+    form.vor.data = flight.vor
+    form.rnav_gps.data = flight.rnav_gps
+    form.ndb.data = flight.ndb
+    form.landings_day.data = flight.landings_day
+    form.landings_night.data = flight.landings_night
     return render_template('edit_flight.html', form=form)
+
+
+@main.route('/delete/flight/<flight_id>', methods=['GET', 'POST'])
+@login_required
+def delete_flight(flight_id):
+    flight = Flight.query.filter_by(id=flight_id).first()
+    db.session.delete(flight)
+    db.session.commit()
+    flash('Flight deleted.')
+    return redirect(url_for('.view_flights'))
 
 
 @main.route('/add/test', methods=['GET', 'POST'])

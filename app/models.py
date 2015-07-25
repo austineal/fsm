@@ -58,6 +58,8 @@ class Student(db.Model):
     student_type_id = db.Column(db.Integer, db.ForeignKey('studenttypes.id'))
     enrollment_start_date = db.Column(db.Date)
     enrollment_end_date = db.Column(db.Date)
+    medical_received = db.Column(db.Date)
+    medical_expires = db.Column(db.Date)
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'))
     flights = db.relationship('Flight', backref='student')
     tests = db.relationship('Test', backref='student')
