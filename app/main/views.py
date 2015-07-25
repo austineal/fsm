@@ -5,7 +5,7 @@ from collections import defaultdict, namedtuple
 from sqlalchemy import func
 from flask import render_template, flash, redirect, url_for, request, current_app
 from flask.ext.login import login_required
-from .forms import AddStudentForm, AddInstructorForm, AddFlightLessonForm, AddTestTypeForm, AddFlightForm, AddTestForm, MonthlyStudentEnrollmentForm, LogbookForm
+from .forms import AddStudentForm, AddInstructorForm, AddFlightLessonForm, AddTestTypeForm, AddFlightForm, AddTestForm, MonthlyStudentEnrollmentForm, LogbookForm, AddAircraftForm
 from ..models import Student, Instructor, FlightLesson, TestType, Flight, Test, Aircraft
 from .. import db
 from . import main
@@ -39,6 +39,45 @@ def add_student():
         flash('New student added.')
         return redirect(url_for('.index'))
     return render_template('add_student.html', form=form)
+
+
+@main.route('/add/aircraft', methods=['GET', 'POST'])
+@login_required
+def add_aircraft():
+    form = AddAircraftForm()
+    if form.validate_on_submit():
+        aircraft = Aircraft(tail_number=form.tail_number.data)
+        db.session.add(aircraft)
+        db.session.commit()
+        flash('New aircraft added.')
+        return redirect(url_for('.index'))
+    return render_template('add_aircraft.html', form=form)
+
+
+@main.route('/view/aircraft')
+@login_required
+def view_all_aircraft():
+    page = request.args.get('page', 1, type=int)
+    pagination = Aircraft.query.order_by(Aircraft.tail_number).paginate(
+        page, per_page=current_app.config['STUDENTS_PER_PAGE'],
+        error_out=False)
+    aircraft = pagination.items
+    return render_template('view_aircraft.html', aircraft=aircraft, pagination=pagination)
+
+
+@main.route('/view/aircraft/<aircraft_id>', methods=['GET', 'POST'])
+@login_required
+def view_aircraft(aircraft_id):
+    form = AddAircraftForm()
+    aircraft = Aircraft.query.filter_by(id=aircraft_id).first()
+    if form.validate_on_submit():
+        aircraft.tail_number = form.tail_number.data
+        db.session.add(aircraft)
+        db.session.commit()
+        flash('Aircraft updated.')
+        return redirect(url_for('.view_all_aircraft'))
+    form.tail_number.data = aircraft.tail_number
+    return render_template('edit_aircraft.html', form=form)
 
 
 @main.route('/view/students')

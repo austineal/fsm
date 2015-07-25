@@ -3,7 +3,7 @@ from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, SelectField, BooleanField, IntegerField, FloatField, RadioField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import Required, Optional
-from ..models import State, Student, Instructor, FlightLesson, StudentType, TestType
+from ..models import State, Student, Instructor, FlightLesson, StudentType, TestType, Aircraft
 
 
 class NameForm(Form):
@@ -45,6 +45,11 @@ class AddInstructorForm(Form):
     add_instructor = SubmitField('Save Instructor')
 
 
+class AddAircraftForm(Form):
+    tail_number = StringField('Tail Number', validators=[Required()])
+    add_aircraft = SubmitField('Save Aircraft')
+
+
 class AddFlightLessonForm(Form):
     number = IntegerField('Lesson Number')
     name = StringField('Lesson Name')
@@ -56,7 +61,7 @@ class AddFlightForm(Form):
     student = SelectField('Student', coerce=int)
     instructor = SelectField('Instructor', coerce=int)
     flight_lesson = SelectField('Lesson', coerce=int)
-    aircraft = SelectField('Aircraft', coerce=int, choices=[(0, 'asdf')])
+    aircraft = SelectField('Aircraft', coerce=int)
     ground_time = FloatField('Pre/Post Ground', default=0)
     flight_time = FloatField('Flight Time', default=0)
     se_dual = FloatField('SE Dual', default=0)
@@ -92,6 +97,8 @@ class AddFlightForm(Form):
                                    in Instructor.query.order_by(Instructor.last_name, Instructor.first_name).all()]
         self.flight_lesson.choices = [(lesson.id, '%d: %s' % (lesson.number, lesson.name))
                                       for lesson in FlightLesson.query.order_by(FlightLesson.number).all()]
+        self.aircraft.choices = [(plane.id, plane.tail_number) for plane
+                                 in Aircraft.query.order_by(Aircraft.tail_number).all()]
 
 
 class AddTestTypeForm(Form):
