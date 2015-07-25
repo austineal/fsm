@@ -599,7 +599,6 @@ def logbook_report():
         form.student.data = student_id
 
         flights = db.session.query(Flight).join(Instructor).filter(student_id==Flight.student_id).filter(from_date <= Flight.date).filter(to_date >= Flight.date).order_by(Flight.date).all()
-        print flights
         return render_template('reports/logbook.html', form=form, flights=flights)
     else:
         return render_template('reports/logbook.html', form=form)
