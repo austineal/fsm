@@ -137,3 +137,16 @@ class MonthlyStudentEnrollmentForm(Form):
         self.instructor.choices .extend([(instructor.id, '%s, %s' % (instructor.last_name, instructor.first_name))
                                          for instructor
                                          in Instructor.query.order_by(Instructor.last_name, Instructor.first_name).all()])
+
+
+class LogbookForm(Form):
+    today = date.today()
+    from_date = DateField('From', default=date(today.year, today.month, 1), validators=[Required()])
+    to_date = DateField('To', default=today, validators=[Required()])
+    student = SelectField('Student', coerce=int, validators=[Required()])
+    get_report = SubmitField('Generate Report')
+
+    def __init__(self, *args, **kwargs):
+        super(LogbookForm, self).__init__(*args, **kwargs)
+        self.student.choices = [(student.id, '%s, %s' % (student.last_name, student.first_name))
+                                for student in Student.query.order_by(Student.last_name, Student.first_name).all()]

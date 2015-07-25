@@ -5,8 +5,8 @@ from collections import defaultdict, namedtuple
 from sqlalchemy import func
 from flask import render_template, flash, redirect, url_for, request, current_app
 from flask.ext.login import login_required
-from .forms import AddStudentForm, AddInstructorForm, AddFlightLessonForm, AddTestTypeForm, AddFlightForm, AddTestForm, MonthlyStudentEnrollmentForm
-from ..models import Student, Instructor, FlightLesson, TestType, Flight, Test
+from .forms import AddStudentForm, AddInstructorForm, AddFlightLessonForm, AddTestTypeForm, AddFlightForm, AddTestForm, MonthlyStudentEnrollmentForm, LogbookForm
+from ..models import Student, Instructor, FlightLesson, TestType, Flight, Test, Aircraft
 from .. import db
 from . import main
 
@@ -263,6 +263,8 @@ def add_flight():
         flight.ndb = form.ndb.data
         flight.landings_day = form.landings_day.data
         flight.landings_night = form.landings_night.data
+
+        flight.calculate_log_time()
         db.session.add(flight)
         db.session.commit()
         flash('New flight added.')
@@ -316,6 +318,7 @@ def view_flight(flight_id):
         flight.ndb = form.ndb.data
         flight.landings_day = form.landings_day.data
         flight.landings_night = form.landings_night.data
+        flight.calculate_log_time()
         db.session.add(flight)
         db.session.commit()
         flash('Flight updated.')
@@ -536,3 +539,28 @@ def graduation_report():
 
     else:
         return render_template('reports/graduation.html', form=form)
+
+
+@main.route('/report/logbook', methods=['GET', 'POST'])
+@login_required
+def logbook_report():
+    form = LogbookForm()
+    if form.validate_on_submit():
+        from_date = form.from_date.data
+        to_date = form.to_date.data
+        student_id = form.student.data
+        return redirect(url_for('.logbook_report', from_date=from_date, to_date=to_date,
+                                student_id=student_id))
+    if 'from_date' in request.values and 'to_date' in request.values:
+        from_date = datetime.strptime(request.values.get('from_date'), '%Y-%m-%d').date()
+        to_date = datetime.strptime(request.values.get('to_date'), '%Y-%m-%d').date()
+        student_id = int(request.values.get('student_id'))
+        form.from_date.data = from_date
+        form.to_date.data = to_date
+        form.student.data = student_id
+
+        flights = db.session.query(Flight).join(Instructor).filter(student_id==Flight.student_id).filter(from_date <= Flight.date).filter(to_date >= Flight.date).order_by(Flight.date).all()
+        print flights
+        return render_template('reports/logbook.html', form=form, flights=flights)
+    else:
+        return render_template('reports/logbook.html', form=form)

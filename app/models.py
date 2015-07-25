@@ -162,6 +162,14 @@ class Flight(db.Model):
     landings_day = db.Column(db.Integer)
     landings_night = db.Column(db.Integer)
 
+    # these are calculated from the raw values above
+    student_solo_time = db.Column(db.Float)
+    student_pic_time = db.Column(db.Float)
+
+    def calculate_log_time(self):
+        self.student_pic_time = self.se_pic + self.me_pic
+        self.student_solo_time = self.se_solo
+
 
 class Test(db.Model):
     __tablename__ = 'tests'

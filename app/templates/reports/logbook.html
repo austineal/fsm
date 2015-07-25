@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flight School Manager - Report - Student Logbook{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1>Student Logbook</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <th>
+            Date
+        </th>
+        <th>
+            Flight Time
+        </th>
+        <th>
+            Aircraft
+        </th>
+        <th>
+            Instructor
+        </th>
+        <th>
+            Solo
+        </th>
+        <th>
+            PIC
+        </th>
+        </thead>
+        <tbody>
+        {%  for flight in flights %}
+        <tr>
+            <td>{{ flight.date }}</td>
+            <td>{{ flight.flight_time }}</td>
+            <td>{{ flight.aircraft_id }}</td>
+            <td>{{ flight.instructor.first_name }} {{ flight.instructor.last_name }}</td>
+            <td>{{ flight.student_solo_time }}</td>
+            <td>{{ flight.student_pic_time }}</td>
+            <!--<td><a href="/view/students/{{ flight.id }}">view/edit details</a></td>-->
+        </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
