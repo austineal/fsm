@@ -180,7 +180,9 @@ def add_flight_lesson():
     form = AddFlightLessonForm()
     if form.validate_on_submit():
         lesson = FlightLesson(number=form.number.data,
-                              name=form.name.data)
+                              name=form.name.data,
+                              objectives=form.objectives.data,
+                              completion_standards=form.completion_standards.data)
         db.session.add(lesson)
         db.session.commit()
         flash('New flight lesson added.')
@@ -207,12 +209,16 @@ def view_flight_lesson(lesson_id):
     if form.validate_on_submit():
         lesson.number = form.number.data
         lesson.name = form.name.data
+        lesson.objectives = form.objectives.data
+        lesson.completion_standards = form.completion_standards.data
         db.session.add(lesson)
         db.session.commit()
         flash('Flight lesson updated.')
         return redirect(url_for('.view_flight_lessons'))
     form.number.data = lesson.number
     form.name.data = lesson.name
+    form.objectives.data = lesson.objectives
+    form.completion_standards.data = lesson.completion_standards
     return render_template('edit_flight_lesson.html', form=form)
 
 

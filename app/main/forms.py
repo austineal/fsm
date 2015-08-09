@@ -1,8 +1,9 @@
 from datetime import date
 from flask.ext.wtf import Form
-from wtforms import StringField, SubmitField, SelectField, BooleanField, IntegerField, FloatField, RadioField
+from wtforms import StringField, SubmitField, SelectField, BooleanField, IntegerField, FloatField, RadioField, \
+    TextAreaField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import Required, Optional
+from wtforms.validators import Required, Optional, length
 from ..models import State, Student, Instructor, FlightLesson, StudentType, TestType, Aircraft
 
 
@@ -53,6 +54,8 @@ class AddAircraftForm(Form):
 class AddFlightLessonForm(Form):
     number = IntegerField('Lesson Number')
     name = StringField('Lesson Name')
+    objectives = TextAreaField('Objectives', validators=[Optional(), length(max=1024)])
+    completion_standards = TextAreaField('Completion Standards', validators=[Optional(), length(max=1024)])
     add_lesson = SubmitField('Save Lesson')
 
 
