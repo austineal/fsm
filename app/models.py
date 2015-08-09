@@ -126,6 +126,8 @@ class FlightLesson(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.Integer)
     name = db.Column(db.String(128))
+    objectives = db.Column(db.String(1024))
+    completion_standards = db.Column(db.String(1024))
     flights = db.relationship('Flight', backref='flight_lesson')
 
 
