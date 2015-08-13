@@ -85,7 +85,7 @@ class AddFlightForm(Form):
     ils = IntegerField('ILS', default=0)
     loc = IntegerField('LOC', default=0)
     vor = IntegerField('VOR', default=0)
-    rnav_gps = IntegerField('RNAV/ GPS', default=0)
+    rnav_gps = IntegerField('RNAV/GPS', default=0)
     ndb = IntegerField('NDB', default=0)
     landings_day = IntegerField('Landings Day', default=0)
     landings_night = IntegerField('Landings Night', default=0)

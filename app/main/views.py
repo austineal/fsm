@@ -3,8 +3,10 @@ from __future__ import division
 from datetime import datetime, date
 from collections import defaultdict, namedtuple
 from sqlalchemy import func
-from flask import render_template, flash, redirect, url_for, request, current_app
+from flask import render_template, flash, redirect, url_for, request, current_app, make_response
+from flask.helpers import send_file
 from flask.ext.login import login_required
+from flask_weasyprint import HTML, render_pdf
 from .forms import AddStudentForm, AddInstructorForm, AddFlightLessonForm, AddTestTypeForm, AddFlightForm, AddTestForm, MonthlyStudentEnrollmentForm, LogbookForm, AddAircraftForm
 from ..models import Student, Instructor, FlightLesson, TestType, Flight, Test, Aircraft
 from .. import db
@@ -334,40 +336,41 @@ def view_flight(flight_id):
     form = AddFlightForm()
     flight = Flight.query.filter_by(id=flight_id).first()
     if form.validate_on_submit():
-        flight.date = form.date.data
-        flight.student_id = form.student.data
-        flight.instructor_id = form.instructor.data
-        flight.flight_time = form.flight_time.data
-        flight.flight_lesson_id = form.flight_lesson.data
-        flight.aircraft_id = form.aircraft.data
-        flight.ground_time = form.ground_time.data
-        flight.se_dual = form.se_dual.data
-        flight.se_solo = form.se_solo.data
-        flight.se_pic = form.se_pic.data
-        flight.me_dual = form.me_dual.data
-        flight.me_pic = form.me_pic.data
-        flight.xc_pic_solo = form.xc_pic_solo.data
-        flight.xc_dual = form.xc_dual.data
-        flight.night_dual = form.night_dual.data
-        flight.night_dual_xc = form.night_dual_xc.data
-        flight.night_pic_solo = form.night_pic_solo.data
-        flight.se_complex = form.se_complex.data
-        flight.instrument_hood = form.instrument_hood.data
-        flight.instrument_actual = form.instrument_actual.data
-        flight.ftd = form.ftd.data
-        flight.pcatd = form.pcatd.data
-        flight.ils = form.ils.data
-        flight.loc = form.loc.data
-        flight.vor = form.vor.data
-        flight.rnav_gps = form.rnav_gps.data
-        flight.ndb = form.ndb.data
-        flight.landings_day = form.landings_day.data
-        flight.landings_night = form.landings_night.data
-        flight.calculate_log_time()
-        db.session.add(flight)
-        db.session.commit()
-        flash('Flight updated.')
-        return redirect(url_for('.view_flights'))
+        if 'add_flight' in request.form:  # if the Save Flight button was clicked
+            flight.date = form.date.data
+            flight.student_id = form.student.data
+            flight.instructor_id = form.instructor.data
+            flight.flight_time = form.flight_time.data
+            flight.flight_lesson_id = form.flight_lesson.data
+            flight.aircraft_id = form.aircraft.data
+            flight.ground_time = form.ground_time.data
+            flight.se_dual = form.se_dual.data
+            flight.se_solo = form.se_solo.data
+            flight.se_pic = form.se_pic.data
+            flight.me_dual = form.me_dual.data
+            flight.me_pic = form.me_pic.data
+            flight.xc_pic_solo = form.xc_pic_solo.data
+            flight.xc_dual = form.xc_dual.data
+            flight.night_dual = form.night_dual.data
+            flight.night_dual_xc = form.night_dual_xc.data
+            flight.night_pic_solo = form.night_pic_solo.data
+            flight.se_complex = form.se_complex.data
+            flight.instrument_hood = form.instrument_hood.data
+            flight.instrument_actual = form.instrument_actual.data
+            flight.ftd = form.ftd.data
+            flight.pcatd = form.pcatd.data
+            flight.ils = form.ils.data
+            flight.loc = form.loc.data
+            flight.vor = form.vor.data
+            flight.rnav_gps = form.rnav_gps.data
+            flight.ndb = form.ndb.data
+            flight.landings_day = form.landings_day.data
+            flight.landings_night = form.landings_night.data
+            flight.calculate_log_time()
+            db.session.add(flight)
+            db.session.commit()
+            flash('Flight updated.')
+            return redirect(url_for('.view_flights'))
     form.date.data = flight.date
     form.student.data = flight.student_id
     form.instructor.data = flight.instructor_id
@@ -398,6 +401,15 @@ def view_flight(flight_id):
     form.landings_day.data = flight.landings_day
     form.landings_night.data = flight.landings_night
     return render_template('edit_flight.html', form=form)
+
+
+@main.route('/view/flight/<flight_id>/pdf', methods=['GET', 'POST'])
+@login_required
+def view_flight_pdf(flight_id):
+    flight = Flight.query.filter_by(id=flight_id).first()
+    html = render_template('edit_flight_pdf.html', flight=flight)
+    filename = '%s_%s_lesson%s.pdf' % (flight.student.last_name, flight.date, flight.flight_lesson.number)
+    return render_pdf(HTML(string=html), download_filename=filename)
 
 
 @main.route('/delete/flight/<flight_id>', methods=['GET', 'POST'])

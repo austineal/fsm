@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Flight Record</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" media="print">
+    <style type="text/css">
+        @page {
+        padding-left: 1.5cm;
+        @bottom-left {
+        content: "Student Signature";
+        padding-right: 8em;
+        font-size: 150%;
+        border-top: solid #000000;
+        }
+        @bottom-right {
+        content: "Instructor Signature";
+        font-size: 150%;
+        padding-right: 8em;
+        border-top: solid #000000;
+        }
+        body { text-align: justify }
+    </style>
+</head>
+<body style="font-size:1.2em">
+<div class="container">
+    <h2>Flight Record</h2>
+    <div class="row">
+        <div class="col-xs-4">
+            <h4><small>Date</small><br/>{{ flight.date }}</h4>
+        </div>
+        <div class="col-xs-4">
+            <h4><small>Student</small><br/>{{ flight.student.last_name }}, {{ flight.student.first_name }}</h4>
+        </div>
+        <div class="col-xs-4">
+            <h4><small>Instructor</small><br/>{{ flight.instructor.last_name }}, {{ flight.instructor.first_name }}</h4>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-7">
+            <p><b>Lesson</b><br/>{{ flight.flight_lesson.number }}: {{ flight.flight_lesson.name }}</p>
+        </div>
+        <div class="col-xs-4">
+            <p><b>Aircraft</b><br/>{{ flight.aircraft.tail_number }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <p><b>Objectives</b><br/>{{ flight.flight_lesson.objectives }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <p><b>Completion Standards</b><br/>{{ flight.flight_lesson.completion_standards }}</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-xs-5">
+            <p><b>Flight Time</b> {{ flight.flight_time }}</p>
+        </div>
+        <div class="col-xs-5">
+            <p><b>Pre/Post Ground</b> {{ flight.ground_time }}</p>
+        </div>
+    </div>
+    <br/>
+
+    <small>
+    <table class="table table-condensed">
+        <tr>
+            <td><b>SE Dual</b> {{ flight.se_dual }}</td>
+            <td><b>SE Solo</b> {{ flight.se_solo }}</td>
+            <td><b>SE PIC</b> {{ flight.se_pic }}</td>
+            <td><b>ME Dual</b> {{ flight.me_dual }}</td>
+        </tr>
+        <tr>
+            <td><b>ME PIC</b> {{ flight.me_pic }}</td>
+            <td><b>XC PIC Solo</b> {{ flight.xc_pic_solo }}</td>
+            <td><b>XC Dual</b> {{ flight.xc_dual }}</td>
+            <td><b>Night Dual</b> {{ flight.night_dual }}</td>
+        </tr>
+        <tr>
+            <td><b>Night Dual XC</b> {{ flight.night_dual_xc }}/td>
+            <td><b>Night PIC Solo</b> {{ flight.night_pic_solo }}</td>
+            <td><b>SE Complex</b> {{ flight.se_complex }}</td>
+        </tr>
+        <tr>
+
+        </tr>
+    </table>
+    </small>
+    <small>
+        <table class="table">
+        <tr>
+            <td><b>Instrument Hood</b> {{ flight.instrument_hood }}</td>
+            <td><b>Instrument Actual</b> {{ flight.instrument_actual }}</td>
+            <td><b>FTD</b> {{ flight.ftd }}</td>
+            <td><b>PCATD</b> {{ flight.pcatd }}</td>
+        </tr>
+        <tr>
+            <td><b>ILS</b> {{ flight.ils }}</td>
+            <td><b>LOC</b> {{ flight.loc }}</td>
+            <td><b>VOR</b> {{ flight.vor }}</td>
+            <td><b>RNAV/GPS</b> {{ flight.rnav_gps }}</td>
+        </tr>
+        <tr>
+            <td><b>NDB</b> {{ flight.ndb }}</td>
+            <td><b>Landings Day</b> {{ flight.landings_day }}</td>
+            <td><b>Landings Night</b> {{ flight.landings_night }}</td>
+        </tr>
+    </table>
+    </small>
+</div>
+</body>
+</html>
