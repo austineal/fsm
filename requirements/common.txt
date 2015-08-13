@@ -25,4 +25,3 @@ cffi==1.1.2
 html5lib==1.0b3
 itsdangerous==0.23
 six==1.4.1
-xhtml2pdf==0.0.6
