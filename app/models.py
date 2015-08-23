@@ -1,5 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin
+from markdown import markdown
+import bleach
 from . import db, login_manager
 
 
@@ -127,8 +129,28 @@ class FlightLesson(db.Model):
     number = db.Column(db.Integer)
     name = db.Column(db.String(128))
     objectives = db.Column(db.String(1024))
+    objectives_html = db.Column(db.String(1024))
     completion_standards = db.Column(db.String(1024))
+    completion_standards_html = db.Column(db.String(1024))
     flights = db.relationship('Flight', backref='flight_lesson')
+
+    @staticmethod
+    def on_changed_objectives(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b' 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'pre', 'strong',
+                        'ul', 'h1', 'h2', 'h3', 'p']
+        target.objectives_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True
+        ))
+
+    @staticmethod
+    def on_changed_completion_standards(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b' 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'pre', 'strong',
+                        'ul', 'h1', 'h2', 'h3', 'p']
+        target.completion_standards_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True
+        ))
 
 
 class Flight(db.Model):
@@ -206,3 +228,6 @@ class Aircraft(db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+db.event.listen(FlightLesson.objectives, 'set', FlightLesson.on_changed_objectives)
+db.event.listen(FlightLesson.completion_standards, 'set', FlightLesson.on_changed_completion_standards)

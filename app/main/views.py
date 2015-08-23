@@ -335,6 +335,7 @@ def view_flights():
 def view_flight(flight_id):
     form = AddFlightForm()
     flight = Flight.query.filter_by(id=flight_id).first()
+    print flight.flight_lesson.objectives_html
     if form.validate_on_submit():
         if 'add_flight' in request.form:  # if the Save Flight button was clicked
             flight.date = form.date.data

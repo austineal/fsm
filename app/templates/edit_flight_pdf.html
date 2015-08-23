@@ -47,12 +47,22 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <p><b>Objectives</b><br/>{{ flight.flight_lesson.objectives }}</p>
+            <p><b>Objectives</b><br/>
+                {% if flight.flight_lesson.objectives_html %}
+                    {{ flight.flight_lesson.objectives_html | safe }}
+                {% else %}
+                    {{ flight.flight_lesson.objectives }}
+                {% endif %}</p>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <p><b>Completion Standards</b><br/>{{ flight.flight_lesson.completion_standards }}</p>
+            <p><b>Completion Standards</b><br/>
+            {% if flight.flight_lesson.completion_standards_html %}
+                    {{ flight.flight_lesson.completion_standards_html | safe }}
+                {% else %}
+                    {{ flight.flight_lesson.completion_standards }}
+                {% endif %}</p>
         </div>
     </div>
 
