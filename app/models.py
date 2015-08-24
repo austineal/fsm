@@ -128,10 +128,10 @@ class FlightLesson(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.Integer)
     name = db.Column(db.String(128))
-    objectives = db.Column(db.String(1024))
-    objectives_html = db.Column(db.String(1024))
-    completion_standards = db.Column(db.String(1024))
-    completion_standards_html = db.Column(db.String(1024))
+    objectives = db.Column(db.String(32000))
+    objectives_html = db.Column(db.String(64000))
+    completion_standards = db.Column(db.String(32000))
+    completion_standards_html = db.Column(db.String(64000))
     flights = db.relationship('Flight', backref='flight_lesson')
 
     @staticmethod
