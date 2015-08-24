@@ -55,8 +55,8 @@ class AddAircraftForm(Form):
 class AddFlightLessonForm(Form):
     number = IntegerField('Lesson Number')
     name = StringField('Lesson Name')
-    objectives = PageDownField('Objectives', validators=[Optional(), length(max=1024)])
-    completion_standards = PageDownField('Completion Standards', validators=[Optional(), length(max=1024)])
+    objectives = PageDownField('Objectives', validators=[Optional(), length(max=32000)])
+    completion_standards = PageDownField('Completion Standards', validators=[Optional(), length(max=32000)])
     add_lesson = SubmitField('Save Lesson')
 
 
