@@ -7,7 +7,150 @@
 <div class="page-header">
     <h1>Edit Flight</h1>
 </div>
+<!--
 <div class="col-md-4">
     {{ wtf.quick_form(form) }}
 </div>
+-->
+<form class="form" method="POST" role="form">
+    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.date.errors %} has-error {% endif %}">
+            {{ form.date.label() }} {{ form.date(class='form-control') }}
+            {% if form.date.errors %}
+                {% for error in form.date.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-6 col-md-offset-2 form-group">
+            {{ form.flight_lesson.label() }} {{ form.flight_lesson(class='form-control') }}
+        </div>
+        <div class="col-md-2 form-group">
+            {{ form.aircraft.label() }} {{ form.aircraft(class='form-control') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            {{ form.student.label() }} {{ form.student(class='form-control') }}
+        </div>
+        <div class="col-md-6 form-group">
+            {{ form.instructor.label() }} {{ form.instructor(class='form-control') }}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-2 form-group">
+            {{ form.ground_time.label() }}
+            <div class="input-group">
+                {{ form.ground_time(class='form-control') }}
+                <div class="input-group-addon">hours</div>
+            </div>
+        </div>
+        <div class="col-md-2 form-group">
+            {{ form.flight_time.label() }}
+            <div class="input-group">
+                {{ form.flight_time(class='form-control') }}
+                <div class="input-group-addon">hours</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 form-group">
+            {{ form.se_dual.label() }}<br/>&nbsp;
+            {{ form.se_dual(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.se_solo.label() }}<br/>&nbsp;
+            {{ form.se_solo(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.se_pic.label() }}<br/>&nbsp;
+            {{ form.se_pic(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.se_complex.label() }}
+            {{ form.se_complex(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.me_dual.label() }}<br/>&nbsp;
+            {{ form.me_dual(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.me_pic.label() }}<br/>&nbsp;
+            {{ form.me_pic(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.xc_pic_solo.label() }}
+            {{ form.xc_pic_solo(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.xc_dual.label() }}<br/>&nbsp;
+            {{ form.xc_dual(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.night_dual.label() }}
+            {{ form.night_dual(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.night_dual_xc.label() }}
+            {{ form.night_dual_xc(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.night_pic_solo.label() }}
+            {{ form.night_pic_solo(class='form-control') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 form-group">
+            {{ form.instrument_hood.label() }}
+            {{ form.instrument_hood(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.instrument_actual.label() }}
+            {{ form.instrument_actual(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.ftd.label() }}<br/>&nbsp;
+            {{ form.ftd(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.pcatd.label() }}<br/>&nbsp;
+            {{ form.pcatd(class='form-control') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 form-group">
+            {{ form.ils.label() }}
+            {{ form.ils(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.loc.label() }}
+            {{ form.loc(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.vor.label() }}
+            {{ form.vor(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.rnav_gps.label() }}
+            {{ form.rnav_gps(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.ndb.label() }}
+            {{ form.ndb(class='form-control') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 form-group">
+            {{ form.landings_day.label() }}
+            {{ form.landings_day(class='form-control') }}
+        </div>
+        <div class="col-md-1 form-group">
+            {{ form.landings_night.label() }}
+            {{ form.landings_night(class='form-control') }}
+        </div>
+    </div>
+    {{ form.add_flight(class='btn btn-default') }}
+</form>
 {% endblock %}

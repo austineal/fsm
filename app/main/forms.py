@@ -61,7 +61,7 @@ class AddFlightLessonForm(Form):
 
 
 class AddFlightForm(Form):
-    date = DateField('Date')
+    date = DateField('Date', validators=[Required()])
     student = SelectField('Student', coerce=int)
     instructor = SelectField('Instructor', coerce=int)
     flight_lesson = SelectField('Lesson', coerce=int)
