@@ -39,7 +39,7 @@
             <td>{{ test.test_type.name }}</td>
             <td>{% if test.success == True %}Pass{% else %}Fail{% endif %}</td>
             <td>{% if test.test_type.scored %}{{ test.score }}{% else %}-{% endif %}</td>
-            <td><a href="/view/test/{{ test.id }}">view/edit details</a></td>
+            <td><a href="/view/test/{{ test.id }}">view/edit details | <a href="/delete/test/{{ test.id }}" onclick="return confirm('Are you sure you want to delete this test?')">delete</a></a></td>
         </tr>
         {%  endfor %}
         </tbody>

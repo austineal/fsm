@@ -35,7 +35,7 @@
             <td>{{ flight.instructor.last_name }}, {{  flight.instructor.first_name }}</td>
             <td>{{ flight.flight_lesson.number }}: {{ flight.flight_lesson.name }}</td>
             <td>{{ flight.flight_time }}</td>
-            <td><a href="/view/flight/{{ flight.id }}">view/edit details</a> | <a href="/view/flight/{{ flight.id }}/pdf">create PDF</a> | <a href="/delete/flight/{{ flight.id }}">delete</a></td>
+            <td><a href="/view/flight/{{ flight.id }}">view/edit details</a> | <a href="/view/flight/{{ flight.id }}/pdf">create PDF</a> | <a href="/delete/flight/{{ flight.id }}" onclick="return confirm('Are you sure you want to delete this flight?')">delete</a></td>
         </tr>
         {%  endfor %}
         </tbody>

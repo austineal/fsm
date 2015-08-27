@@ -26,7 +26,7 @@
         <tr>
             <td>{{ testtype.name }}</td>
             <td>{% if testtype.scored %}Yes{% else %}No{% endif %}</td>
-            <td><a href="/view/testtype/{{ testtype.id }}">view/edit details</a> | <a href="/delete/testtype/{{ testtype.id }}">delete</a></td>
+            <td><a href="/view/testtype/{{ testtype.id }}">view/edit details</a> | <a href="/delete/testtype/{{ testtype.id }}" onclick="return confirm('Are you sure you want to delete this test type?')">delete</a></td>
         </tr>
         {%  endfor %}
         </tbody>

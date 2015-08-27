@@ -267,7 +267,7 @@ def view_testtype(testtype_itd):
 
 @main.route('/delete/testtype/<testtype_id>', methods=['GET', 'POST'])
 @login_required
-def delete_test(testtype_id):
+def delete_testtype(testtype_id):
     testtype = TestType.query.filter_by(id=testtype_id).first()
     db.session.delete(testtype)
     db.session.commit()
@@ -482,6 +482,16 @@ def view_test(test_id):
     form.success.data = test.success
     form.score.data = test.score
     return render_template('edit_test.html', form=form)
+
+
+@main.route('/delete/test/<test_id>', methods=['GET', 'POST'])
+@login_required
+def delete_test(test_id):
+    test = Test.query.filter_by(id=test_id).first()
+    db.session.delete(test)
+    db.session.commit()
+    flash('Test deleted.')
+    return redirect(url_for('.view_tests'))
 
 
 @main.route('/report/enrollment', methods=['GET', 'POST'])
