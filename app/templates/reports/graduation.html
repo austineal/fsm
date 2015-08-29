@@ -4,15 +4,15 @@
 {% block title %}Flight School Manager - Report - Graduation{% endblock %}
 
 {% block page_content %}
-    <div class="page-header">
-        <h1>Graduation</h1>
+<div class="page-header">
+    <h1>Graduation</h1>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        {{ wtf.quick_form(form) }}
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
-        </div>
-    </div>
-    <div class="table-responsive">
+</div>
+<div class="table-responsive">
     <table class="table table-striped">
         <thead>
         <th>
@@ -39,6 +39,12 @@
         <th>
             Average pass score, any attempt
         </th>
+        <th>
+            Minimum time to completion
+        </th>
+        <th>
+            Average time to completion
+        </th>
         </thead>
         <tbody>
         {%  for test in test_stats %}
@@ -51,6 +57,8 @@
             <td>{{ test[2].num_fails }}</td>
             <td>{{ test[2].avg_score_first }}</td>
             <td>{{ test[2].avg_score_any }}</td>
+            <td>{{ test[2].min_days_to_completion }}</td>
+            <td>{{ test[2].avg_days_to_completion }}</td>
         </tr>
         {%  endfor %}
         </tbody>

@@ -574,7 +574,14 @@ def graduation_report():
         if instructor_id:
             tests = tests.filter_by(instructor_id=instructor_id)
         for test in tests.all():
-            tests_per_student[test.student_id][test.test_type.id, test.test_type.name, test.test_type.scored].append((test.success, test.score))
+            first_flight_for_student = Flight.query.filter_by(student_id=test.student_id).order_by(Flight.date).first()
+            if first_flight_for_student:
+                days_to_test = (test.date - first_flight_for_student.date).days
+                if days_to_test < 0:
+                    days_to_test = None
+            else:
+                days_to_test = None
+            tests_per_student[test.student_id][test.test_type.id, test.test_type.name, test.test_type.scored].append((test.success, test.score, days_to_test))
 
         for student_id in tests_per_student:
             for key in tests_per_student[student_id]:
@@ -583,10 +590,20 @@ def graduation_report():
                 passes = [1 if entry[0] else 0 for entry in tests_per_student[student_id][key]]
                 test_statistics[key]['num_passes_first'] += passes[0]
                 test_statistics[key]['num_passes_any'] += sum(passes)
-                scores = [entry[1] for entry in tests_per_student[student_id][key] if entry[1]]
+                scores = [entry[1] for entry in tests_per_student[student_id][key] if entry[0] and entry[1]]
                 if scores:
                     test_statistics[key]['sum_score_first'] += scores[0]
                     test_statistics[key]['sum_score_any'] += sum(scores)
+
+                # the min here should be unnecessary because each student should only pass each test once, but in case
+                # there is more than one pass for the same student for the same test, we will take the first one
+                days_to_completion_list = [entry[2] for entry in tests_per_student[student_id][key] if entry[0] and entry[2]]
+                if days_to_completion_list:
+                    days_to_completion = min(days_to_completion_list)
+                    if 'days_to_completion' in test_statistics[key]:
+                        test_statistics[key]['days_to_completion'].append(days_to_completion)
+                    else:
+                        test_statistics[key]['days_to_completion'] = [days_to_completion]
 
         for key in test_statistics:
             test_statistics[key]['pass_rate_first'] = '%1.1f%%' % (test_statistics[key]['num_passes_first']*100/test_statistics[key]['num_attempts_first'])
@@ -598,6 +615,12 @@ def graduation_report():
             else:
                 test_statistics[key]['avg_score_first'] = '-'
                 test_statistics[key]['avg_score_any'] = '-'
+            if 'days_to_completion' in test_statistics[key]:
+                test_statistics[key]['min_days_to_completion'] = '%d days' % min(test_statistics[key]['days_to_completion'])
+                test_statistics[key]['avg_days_to_completion'] = '%1.1f days' % (sum(test_statistics[key]['days_to_completion'])/len(test_statistics[key]['days_to_completion']))
+            else:
+                test_statistics[key]['min_days_to_completion'] = '-'
+                test_statistics[key]['avg_days_to_completion'] = '-'
 
         test_statistics_tuples = []
         for key, value in test_statistics.items():
