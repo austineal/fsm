@@ -5,7 +5,7 @@ from wtforms import StringField, SubmitField, SelectField, BooleanField, Integer
     TextAreaField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import Required, Optional, length
-from ..models import State, Student, Instructor, FlightLesson, StudentType, TestType, Aircraft
+from ..models import State, Student, Instructor, FlightLesson, StudentType, TestType, Aircraft, TSAEligibilityDoc
 
 
 class NameForm(Form):
@@ -28,6 +28,9 @@ class AddStudentForm(Form):
     instructor = SelectField('Instructor', coerce=int)
     medical_received = DateField('Medical Received', validators=[Optional()])
     medical_expires = DateField('Medical Expires', validators=[Optional()])
+    student_cert_received = DateField('Student Certificate Received', validators=[Optional()])
+    student_cert_expires = DateField('Student Certificate Expires', validators=[Optional()])
+    tsa_proof = SelectField('Proof of TSA Eligibility', coerce=int)
     add_student = SubmitField('Save Student')
 
     def __init__(self, *args, **kwargs):
@@ -39,12 +42,37 @@ class AddStudentForm(Form):
         self.instructor.choices = [(instructor.id, '%s, %s' % (instructor.last_name, instructor.first_name))
                                    for instructor
                                    in Instructor.query.order_by(Instructor.last_name, Instructor.first_name).all()]
+        self.tsa_proof.choices = [(doc.id, doc.doc_name)
+                                  for doc in TSAEligibilityDoc.query.order_by(TSAEligibilityDoc.doc_name).all()]
 
 
 class AddInstructorForm(Form):
     first_name = StringField('First Name', validators=[Required()])
     last_name = StringField('Last Name', validators=[Required()])
+    tsa_proof = SelectField('Proof of TSA Eligibility', coerce=int)
+    medical_received = DateField('Medical Received', validators=[Optional()])
+    medical_expires = DateField('Medical Expires', validators=[Optional()])
+    flight_review_received = DateField('Flight Review Received', validators=[Optional()])
+    flight_review_expires = DateField('Flight Review Expires', validators=[Optional()])
+    bfr_received = DateField('BFR Received', validators=[Optional()])
+    bfr_expires = DateField('BFR Expires', validators=[Optional()])
+    ipc_received = DateField('IPC Received', validators=[Optional()])
+    ipc_expires = DateField('IPC Expires', validators=[Optional()])
+    checkout_141 = BooleanField('141 Checkout', validators=[Optional()])
+    checkout_141_date = DateField('141 Checkout Date', validators=[Optional()])
+    night_currency_start_date = DateField('Night Currency Start', validators=[Optional()])
+    night_currency_end_date = DateField('Night Currency End', validators=[Optional()])
+    me_currency_start_date = DateField('ME Currency Start', validators=[Optional()])
+    me_currency_end_date = DateField('ME Currency End', validators=[Optional()])
+    tailwheel_currency_start_date = DateField('Tail Wheel Currency Start', validators=[Optional()])
+    tailwheel_currency_end_date = DateField('Tail Wheel Currency End', validators=[Optional()])
     add_instructor = SubmitField('Save Instructor')
+
+    def __init__(self, *args, **kwargs):
+        super(AddInstructorForm, self).__init__(*args, **kwargs)
+        self.tsa_proof.choices = [(doc.id, doc.doc_name)
+                                  for doc in TSAEligibilityDoc.query.order_by(TSAEligibilityDoc.doc_name).all()]
+
 
 
 class AddAircraftForm(Form):

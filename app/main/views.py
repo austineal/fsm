@@ -34,8 +34,11 @@ def add_student():
                           active=form.active.data,
                           student_type_id=form.student_type.data,
                           instructor_id=form.instructor.data,
-                          medical_received=form.medical_received,
-                          medical_expires=form.medical_expires)
+                          medical_received=form.medical_received.data,
+                          medical_expires=form.medical_expires.data,
+                          tsa_eligibility_doc_id=form.tsa_proof.data,
+                          student_certificate_received=form.student_cert_received.data,
+                          student_certificate_expires=form.student_cert_expires.data)
         db.session.add(student)
         db.session.commit()
         flash('New student added.')
@@ -113,6 +116,9 @@ def view_student(student_id):
         student.instructor_id = form.instructor.data
         student.medical_received = form.medical_received.data
         student.medical_expires = form.medical_expires.data
+        student.tsa_eligibility_doc_id = form.tsa_proof.data
+        student.student_certificate_received = form.student_cert_received.data
+        student.student_certificate_expires = form.student_cert_expires.data
         db.session.add(student)
         db.session.commit()
         flash('Student updated.')
@@ -131,6 +137,9 @@ def view_student(student_id):
     form.instructor.data = student.instructor_id
     form.medical_received.data = student.medical_received
     form.medical_expires.data = student.medical_expires
+    form.tsa_proof.data = student.tsa_eligibility_doc_id
+    form.student_cert_received.data = student.student_certificate_received
+    form.student_cert_expires.data = student.student_certificate_expires
     return render_template('edit_student.html', form=form)
 
 
@@ -140,7 +149,24 @@ def add_instructor():
     form = AddInstructorForm()
     if form.validate_on_submit():
         instructor = Instructor(first_name=form.first_name.data,
-                                last_name=form.last_name.data)
+                                last_name=form.last_name.data,
+                                tsa_eligibility_doc_id=form.tsa_proof.data,
+                                medical_received=form.medical_received.data,
+                                medical_expires=form.medical_expires.data,
+                                flight_review_received=form.flight_review_received.data,
+                                flight_review_expires=form.flight_review_expires.data,
+                                bfr_received=form.bfr_received.data,
+                                bfr_expires=form.bfr_expires.data,
+                                ipc_received=form.ipc_received.data,
+                                ipc_expires=form.ipc_expires.data,
+                                checkout_141=form.checkout_141.data,
+                                checkout_141_date=form.checkout_141_date.data,
+                                night_currency_start_date=form.night_currency_start_date,
+                                night_currency_end_date=form.night_currency_end_date,
+                                me_currency_start_date=form.me_currency_start_date,
+                                me_currency_end_date=form.me_currency_end_date,
+                                tailwheel_currency_start_date=form.tailwheel_currency_start_date,
+                                tailwheel_currency_end_date=form.tailwheel_currency_end_date)
         db.session.add(instructor)
         db.session.commit()
         flash('New instructor added.')
@@ -167,12 +193,47 @@ def view_instructor(instructor_id):
     if form.validate_on_submit():
         instructor.first_name = form.first_name.data
         instructor.last_name = form.last_name.data
+        instructor.tsa_eligibility_doc_id = form.tsa_proof.data
+        instructor.medical_received = form.medical_received.data
+        instructor.medical_expires = form.medical_expires.data
+        instructor.flight_review_received = form.flight_review_received.data
+        instructor.flight_review_expires = form.flight_review_expires.data
+        instructor.bfr_received = form.bfr_received.data
+        instructor.bfr_expires = form.bfr_expires.data
+        instructor.ipc_received = form.ipc_received.data
+        instructor.ipc_expires = form.ipc_expires.data
+        instructor.checkout_141 = form.checkout_141.data
+        instructor.checkout_141_date = form.checkout_141_date.data
+        instructor.night_currency_start_date = form.night_currency_start_date.data
+        instructor.night_currency_end_date = form.night_currency_end_date.data
+        instructor.me_currency_start_date = form.me_currency_start_date.data
+        instructor.me_currency_end_date = form.me_currency_end_date.data
+        instructor.tailwheel_currency_start_date = form.tailwheel_currency_start_date.data
+        instructor.tailwheel_currency_end_date = form.tailwheel_currency_end_date.data
         db.session.add(instructor)
         db.session.commit()
         flash('Instructor updated.')
         return redirect(url_for('.view_instructors'))
     form.first_name.data = instructor.first_name
     form.last_name.data = instructor.last_name
+    form.tsa_proof.data = instructor.tsa_eligibility_doc_id
+    form.medical_received.data = instructor.medical_received
+    form.medical_expires.data = instructor.medical_expires
+    form.flight_review_received.data = instructor.flight_review_received
+    form.flight_review_expires.data = instructor.flight_review_expires
+    form.bfr_received.data = instructor.bfr_received
+    form.bfr_expires.data = instructor.bfr_expires
+    form.ipc_received.data = instructor.ipc_received
+    form.ipc_expires.data = instructor.ipc_expires
+    form.checkout_141.data = instructor.checkout_141
+    form.checkout_141_date.data = instructor.checkout_141_date
+    form.night_currency_start_date.data = instructor.night_currency_start_date
+    form.night_currency_end_date.data = instructor.night_currency_end_date
+    form.me_currency_start_date.data = instructor.me_currency_start_date
+    form.me_currency_end_date.data = instructor.me_currency_end_date
+    form.tailwheel_currency_start_date.data = instructor.tailwheel_currency_start_date
+    form.tailwheel_currency_end_date.data = instructor.tailwheel_currency_end_date
+
     return render_template('edit_instructor.html', form=form)
 
 
@@ -335,7 +396,6 @@ def view_flights():
 def view_flight(flight_id):
     form = AddFlightForm()
     flight = Flight.query.filter_by(id=flight_id).first()
-    print flight.flight_lesson.objectives_html
     if form.validate_on_submit():
         if 'add_flight' in request.form:  # if the Save Flight button was clicked
             flight.date = form.date.data

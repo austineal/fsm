@@ -62,6 +62,10 @@ class Student(db.Model):
     enrollment_end_date = db.Column(db.Date)
     medical_received = db.Column(db.Date)
     medical_expires = db.Column(db.Date)
+    student_certificate_received = db.Column(db.Date)
+    student_certificate_expires = db.Column(db.Date)
+    tsa_eligibility_doc_id = db.Column(db.Integer, db.ForeignKey('tsa_docs.id'))
+    tsa_eligibility_doc_number = db.Column(db.String(128))
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'))
     flights = db.relationship('Flight', backref='student')
     tests = db.relationship('Test', backref='student')
@@ -90,11 +94,37 @@ class Student(db.Model):
                 db.session.rollback()
 
 
+class TSAEligibilityDoc(db.Model):
+    __tablename__ = 'tsa_docs'
+    id = db.Column(db.Integer, primary_key=True)
+    doc_name = db.Column(db.String(128))
+    students = db.relationship('Student', backref='tsa_eligibility_doc')
+    instructors = db.relationship('Instructor', backref='tsa_eligibility_doc')
+
+
 class Instructor(db.Model):
     __tablename__ = 'instructors'
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(64))
+    tsa_eligibility_doc_id = db.Column(db.Integer, db.ForeignKey('tsa_docs.id'))
+    tsa_eligibility_doc_number = db.Column(db.String(128))
+    medical_received = db.Column(db.Date)
+    medical_expires = db.Column(db.Date)
+    flight_review_received = db.Column(db.Date)
+    flight_review_expires = db.Column(db.Date)
+    bfr_received = db.Column(db.Date)
+    bfr_expires = db.Column(db.Date)
+    ipc_received = db.Column(db.Date)
+    ipc_expires = db.Column(db.Date)
+    checkout_141 = db.Column(db.Boolean)
+    checkout_141_date = db.Column(db.Date)
+    night_currency_start_date = db.Column(db.Date)
+    night_currency_end_date = db.Column(db.Date)
+    me_currency_start_date = db.Column(db.Date)
+    me_currency_end_date = db.Column(db.Date)
+    tailwheel_currency_start_date = db.Column(db.Date)
+    tailwheel_currency_end_date = db.Column(db.Date)
     flights = db.relationship('Flight', backref='instructor')
     tests = db.relationship('Test', backref='instructor')
     students = db.relationship('Student', backref='instructor')
