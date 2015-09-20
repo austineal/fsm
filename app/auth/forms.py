@@ -23,6 +23,7 @@ class RegistrationForm(Form):
     password = PasswordField('Password', validators=[
         Required(), EqualTo('password2', message='Passwords must match.')])
     password2 = PasswordField('Confirm password', validators=[Required()])
+    is_administrator = BooleanField('Make Administrator')
     submit = SubmitField('Register')
 
     def validate_email(self, field):

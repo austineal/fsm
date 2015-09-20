@@ -2,10 +2,10 @@ from datetime import date
 from flask.ext.wtf import Form
 from flask.ext.pagedown.fields import PageDownField
 from wtforms import StringField, SubmitField, SelectField, BooleanField, IntegerField, FloatField, RadioField, \
-    TextAreaField
+    TextAreaField, PasswordField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import Required, Optional, length
-from ..models import State, Student, Instructor, FlightLesson, StudentType, TestType, Aircraft, TSAEligibilityDoc
+from wtforms.validators import Required, Optional, Length, Email, Regexp, EqualTo, ValidationError
+from ..models import State, Student, Instructor, FlightLesson, StudentType, TestType, Aircraft, TSAEligibilityDoc, User
 
 
 class NameForm(Form):
@@ -83,8 +83,8 @@ class AddAircraftForm(Form):
 class AddFlightLessonForm(Form):
     number = IntegerField('Lesson Number')
     name = StringField('Lesson Name')
-    objectives = PageDownField('Objectives', validators=[Optional(), length(max=32000)])
-    completion_standards = PageDownField('Completion Standards', validators=[Optional(), length(max=32000)])
+    objectives = PageDownField('Objectives', validators=[Optional(), Length(max=32000)])
+    completion_standards = PageDownField('Completion Standards', validators=[Optional(), Length(max=32000)])
     add_lesson = SubmitField('Save Lesson')
 
 

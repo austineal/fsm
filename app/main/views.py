@@ -8,7 +8,7 @@ from flask.helpers import send_file
 from flask.ext.login import login_required
 from flask_weasyprint import HTML, render_pdf
 from .forms import AddStudentForm, AddInstructorForm, AddFlightLessonForm, AddTestTypeForm, AddFlightForm, AddTestForm, MonthlyStudentEnrollmentForm, LogbookForm, AddAircraftForm
-from ..models import Student, Instructor, FlightLesson, TestType, Flight, Test, Aircraft
+from ..models import Student, Instructor, FlightLesson, TestType, Flight, Test, Aircraft, User, Role
 from .. import db
 from . import main
 

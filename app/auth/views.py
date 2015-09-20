@@ -3,7 +3,7 @@ from flask.ext.login import login_user, logout_user, login_required, \
     current_user
 from . import auth
 from .. import db
-from ..models import User
+from ..models import User, Role
 from ..email import send_email
 from .forms import LoginForm, RegistrationForm
 
@@ -29,14 +29,20 @@ def logout():
 
 
 @auth.route('/register', methods=['GET', 'POST'])
+@login_required
 def register():
     form = RegistrationForm()
+    print request
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
                     password=form.password.data)
+        if form.is_administrator.data:
+            user.role = Role.query.filter_by(name='Administrator').first()
+        else:
+            user.role = Role.query.filter_by(name='User').first()
         db.session.add(user)
         db.session.commit()
-        flash('You can now login.')
-        return redirect(url_for('auth.login'))
+        flash('New user created.')
+        return redirect(url_for('main.index'))
     return render_template('auth/register.html', form=form)
