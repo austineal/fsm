@@ -72,7 +72,7 @@
                 {% endfor %}
             {% endif %}
         </div>
-        <div class="col-md-2 form-group {% if form.zip.errors %} has-error {% endif %}">
+        <div class="col-md-1 form-group {% if form.zip.errors %} has-error {% endif %}">
             {{ form.zip.label(class='sr-only') }} {{ form.zip(class='form-control', placeholder='ZIP') }}
             {% if form.zip.errors %}
                 {% for error in form.zip.errors %}
