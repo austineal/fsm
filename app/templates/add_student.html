@@ -47,7 +47,7 @@
     </div>
     <div class="row">
         <div class="col-md-4 form-group {% if form.address.errors %} has-error {% endif %}">
-            {{ form.address.label() }} {{ form.address(class='form-control', placeholder='Address') }}
+            {{ form.address.label() }} {{ form.address(class='form-control', placeholder='Street address') }}
             {% if form.address.errors %}
                 {% for error in form.address.errors %}
                     <span class="help-block">[{{ error }}]</span><br/>
@@ -68,6 +68,14 @@
             {{ form.state.label(class='sr-only') }} {{ form.state(class='form-control') }}
             {% if form.state.errors %}
                 {% for error in form.state.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 form-group {% if form.zip.errors %} has-error {% endif %}">
+            {{ form.zip.label(class='sr-only') }} {{ form.zip(class='form-control', placeholder='ZIP') }}
+            {% if form.zip.errors %}
+                {% for error in form.zip.errors %}
                     <span class="help-block">[{{ error }}]</span><br/>
                 {% endfor %}
             {% endif %}

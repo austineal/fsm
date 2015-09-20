@@ -29,6 +29,7 @@ def add_student():
                           address=form.address.data,
                           city=form.city.data,
                           state_id=form.state.data,
+                          zip_code=form.zip.data,
                           phone_number=form.phone_number.data,
                           email_address=form.email_address.data,
                           active=form.active.data,
@@ -107,6 +108,7 @@ def view_student(student_id):
         student.address = form.address.data
         student.city = form.city.data
         student.state_id = form.state.data
+        student.zip_code = form.zip.data
         student.phone_number = form.phone_number.data
         student.email_address = form.email_address.data
         student.enrollment_start_date = form.enrollment_start_date.data
@@ -128,6 +130,7 @@ def view_student(student_id):
     form.address.data = student.address
     form.city.data = student.city
     form.state.data = student.state_id
+    form.zip.data = student.zip_code
     form.phone_number.data = student.phone_number
     form.email_address.data = student.email_address
     form.enrollment_start_date.data = student.enrollment_start_date

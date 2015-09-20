@@ -19,6 +19,7 @@ class AddStudentForm(Form):
     address = StringField('Address')
     city = StringField('City')
     state = SelectField('State', coerce=int)
+    zip = StringField('ZIP Code')
     phone_number = StringField('Phone Number')
     email_address = StringField('Email Address')
     enrollment_start_date = DateField('Enrollment Start Date')
