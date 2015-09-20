@@ -35,7 +35,7 @@ def upgrade():
     op.alter_column('states', 'id',
                existing_type=sa.INTEGER(),
                nullable=False)
-    op.drop_column('students', 'tsa_eligibility_doc_number')
+    #op.drop_column('students', 'tsa_eligibility_doc_number')
     op.drop_column('students', 'tsa_eligibility_doc_id')
     op.alter_column('students', 'id',
                existing_type=sa.INTEGER(),
