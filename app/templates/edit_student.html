@@ -7,7 +7,197 @@
 <div class="page-header">
     <h1>Edit Student</h1>
 </div>
-<div class="col-md-4">
-    {{ wtf.quick_form(form) }}
-</div>
+<form class="form" method="POST" role="form">
+    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-md-3 form-group {% if form.first_name.errors %} has-error {% endif %}">
+            {{ form.first_name.label() }} {{ form.first_name(class='form-control') }}
+            {% if form.first_name.errors %}
+                {% for error in form.first_name.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-3 form-group {% if form.last_name.errors %} has-error {% endif %}">
+            {{ form.last_name.label() }} {{ form.last_name(class='form-control') }}
+            {% if form.last_name.errors %}
+                {% for error in form.last_name.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.student_type.errors %} has-error {% endif %}">
+            {{ form.student_type.label() }} {{ form.student_type(class='form-control') }}
+            {% if form.student_type.errors %}
+                {% for error in form.student_type.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-4 form-group {% if form.instructor.errors %} has-error {% endif %}">
+            {{ form.instructor.label() }} {{ form.instructor(class='form-control') }}
+            {% if form.instructor.errors %}
+                {% for error in form.instructor.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 form-group {% if form.address.errors %} has-error {% endif %}">
+            {{ form.address.label() }} {{ form.address(class='form-control', placeholder='Address') }}
+            {% if form.address.errors %}
+                {% for error in form.address.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.city.errors %} has-error {% endif %}">
+            {{ form.city.label(class='sr-only') }} {{ form.city(class='form-control', placeholder='City') }}
+            {% if form.city.errors %}
+                {% for error in form.city.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-1 form-group {% if form.state.errors %} has-error {% endif %}">
+            {{ form.state.label(class='sr-only') }} {{ form.state(class='form-control') }}
+            {% if form.state.errors %}
+                {% for error in form.state.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.phone_number.errors %} has-error {% endif %}">
+            {{ form.phone_number.label() }} {{ form.phone_number(class='form-control') }}
+            {% if form.phone_number.errors %}
+                {% for error in form.phone_number.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-3 form-group {% if form.email_address.errors %} has-error {% endif %}">
+            {{ form.email_address.label() }} {{ form.email_address(class='form-control') }}
+            {% if form.email_address.errors %}
+                {% for error in form.email_address.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>School Enrollment</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.enrollment_start_date.errors %} has-error {% endif %}">
+            {{ form.enrollment_start_date.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">From</div>
+                {{ form.enrollment_start_date(class='form-control') }}
+            </div>
+            {% if form.enrollment_start_date.errors %}
+                {% for error in form.enrollment_start_date.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.enrollment_end_date.errors %} has-error {% endif %}">
+            {{ form.enrollment_end_date.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">To</div>
+                {{ form.enrollment_end_date(class='form-control') }}
+            </div>
+            {% if form.enrollment_end_date.errors %}
+                {% for error in form.enrollment_end_date.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 checkbox {% if form.active.errors %} has-error {% endif %}">
+            {{ form.active.label(class='sr-only') }}
+            {{ form.active(class='checkbox') }} Actively Enrolled?
+            {% if form.active.errors %}
+                {% for error in form.active.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>Medical Certificate</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.medical_received.errors %} has-error {% endif %}">
+            {{ form.medical_received.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Start</div>
+                {{ form.medical_received(class='form-control') }}
+            </div>
+            {% if form.medical_received.errors %}
+                {% for error in form.medical_received.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.medical_expires.errors %} has-error {% endif %}">
+            {{ form.medical_expires.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Expiry</div>
+                {{ form.medical_expires(class='form-control') }}
+            </div>
+            {% if form.medical_expires.errors %}
+                {% for error in form.medical_expires.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>Student Certificate</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.student_cert_received.errors %} has-error {% endif %}">
+            {{ form.student_cert_received.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Start</div>
+                {{ form.student_cert_received(class='form-control') }}
+            </div>
+            {% if form.student_cert_received.errors %}
+                {% for error in form.student_cert_received.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.student_cert_expires.errors %} has-error {% endif %}">
+            {{ form.student_cert_expires.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Expiry</div>
+                {{ form.student_cert_expires(class='form-control') }}
+            </div>
+            {% if form.student_cert_expires.errors %}
+                {% for error in form.student_cert_expires.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 form-group {% if form.tsa_proof.errors %} has-error {% endif %}">
+            {{ form.tsa_proof.label() }}
+            {{ form.tsa_proof(class='form-control') }}
+            {% if form.tsa_proof.errors %}
+                {% for error in form.tsa_proof.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    {{ form.add_student(class='btn btn-default') }}
+</form>
 {% endblock %}
