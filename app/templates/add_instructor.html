@@ -7,7 +7,255 @@
 <div class="page-header">
     <h1>Add Instructor</h1>
 </div>
-<div class="col-md-4">
-    {{ wtf.quick_form(form) }}
-</div>
+<form class="form" method="POST" role="form">
+    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-md-3 form-group {% if form.first_name.errors %} has-error {% endif %}">
+            {{ form.first_name.label() }} {{ form.first_name(class='form-control') }}
+            {% if form.first_name.errors %}
+                {% for error in form.first_name.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-3 form-group {% if form.last_name.errors %} has-error {% endif %}">
+            {{ form.last_name.label() }} {{ form.last_name(class='form-control') }}
+            {% if form.last_name.errors %}
+                {% for error in form.last_name.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>Medical Certificate</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.medical_received.errors %} has-error {% endif %}">
+            {{ form.medical_received.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Start</div>
+                {{ form.medical_received(class='form-control') }}
+            </div>
+            {% if form.medical_received.errors %}
+                {% for error in form.medical_received.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.medical_expires.errors %} has-error {% endif %}">
+            {{ form.medical_expires.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Expiry</div>
+                {{ form.medical_expires(class='form-control') }}
+            </div>
+            {% if form.medical_expires.errors %}
+                {% for error in form.medical_expires.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>Flight Review</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.flight_review_received.errors %} has-error {% endif %}">
+            {{ form.flight_review_received.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Start</div>
+                {{ form.flight_review_received(class='form-control') }}
+            </div>
+            {% if form.flight_review_received.errors %}
+                {% for error in form.flight_review_received.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.flight_review_expires.errors %} has-error {% endif %}">
+            {{ form.flight_review_expires.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Expiry</div>
+                {{ form.flight_review_expires(class='form-control') }}
+            </div>
+            {% if form.flight_review_expires.errors %}
+                {% for error in form.flight_review_expires.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>BFR</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.bfr_received.errors %} has-error {% endif %}">
+            {{ form.bfr_received.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Start</div>
+                {{ form.bfr_received(class='form-control') }}
+            </div>
+            {% if form.bfr_received.errors %}
+                {% for error in form.bfr_received.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.bfr_expires.errors %} has-error {% endif %}">
+            {{ form.bfr_expires.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Expiry</div>
+                {{ form.bfr_expires(class='form-control') }}
+            </div>
+            {% if form.bfr_expires.errors %}
+                {% for error in form.bfr_expires.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>IPC</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.ipc_received.errors %} has-error {% endif %}">
+            {{ form.ipc_received.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Start</div>
+                {{ form.ipc_received(class='form-control') }}
+            </div>
+            {% if form.ipc_received.errors %}
+                {% for error in form.ipc_received.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.ipc_expires.errors %} has-error {% endif %}">
+            {{ form.ipc_expires.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Expiry</div>
+                {{ form.ipc_expires(class='form-control') }}
+            </div>
+            {% if form.ipc_expires.errors %}
+                {% for error in form.ipc_expires.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>141 Checkout</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.checkout_141.errors %} has-error {% endif %}">
+            <div class="checkbox">
+            {{ form.checkout_141.label(class='sr-only') }}
+            {{ form.checkout_141(class='checkout') }} Checkout complete
+            </div>
+        </div>
+        <div class="col-md-2 form-group {% if form.checkout_141_date.errors %} has-error {% endif %}">
+            {{ form.checkout_141_date.label(class='sr-only') }}
+            {{ form.checkout_141_date(class='form-control') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>Night Currency</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.night_currency_start_date.errors %} has-error {% endif %}">
+            {{ form.night_currency_start_date.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Start</div>
+                {{ form.night_currency_start_date(class='form-control') }}
+            </div>
+            {% if form.night_currency_start_date.errors %}
+                {% for error in form.night_currency_start_date.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.night_currency_end_date.errors %} has-error {% endif %}">
+            {{ form.night_currency_end_date.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Expiry</div>
+                {{ form.night_currency_end_date(class='form-control') }}
+            </div>
+            {% if form.night_currency_end_date.errors %}
+                {% for error in form.night_currency_end_date.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>ME Currency</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.me_currency_start_date.errors %} has-error {% endif %}">
+            {{ form.me_currency_start_date.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Start</div>
+                {{ form.me_currency_start_date(class='form-control') }}
+            </div>
+            {% if form.me_currency_start_date.errors %}
+                {% for error in form.me_currency_start_date.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.me_currency_end_date.errors %} has-error {% endif %}">
+            {{ form.me_currency_end_date.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Expiry</div>
+                {{ form.me_currency_end_date(class='form-control') }}
+            </div>
+            {% if form.me_currency_end_date.errors %}
+                {% for error in form.me_currency_end_date.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p><strong>Tailwheel Currency</strong></p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group {% if form.tailwheel_currency_start_date.errors %} has-error {% endif %}">
+            {{ form.tailwheel_currency_start_date.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Start</div>
+                {{ form.tailwheel_currency_start_date(class='form-control') }}
+            </div>
+            {% if form.tailwheel_currency_start_date.errors %}
+                {% for error in form.tailwheel_currency_start_date.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-2 col-md-offset-1 form-group {% if form.tailwheel_currency_end_date.errors %} has-error {% endif %}">
+            {{ form.tailwheel_currency_end_date.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="input-group-addon">Expiry</div>
+                {{ form.tailwheel_currency_end_date(class='form-control') }}
+            </div>
+            {% if form.tailwheel_currency_end_date.errors %}
+                {% for error in form.tailwheel_currency_end_date.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 form-group {% if form.tsa_proof.errors %} has-error {% endif %}">
+            {{ form.tsa_proof.label() }}
+            {{ form.tsa_proof(class='form-control') }}
+            {% if form.tsa_proof.errors %}
+                {% for error in form.tsa_proof.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    {{ form.add_instructor(class='btn btn-default') }}
+</form>
 {% endblock %}
