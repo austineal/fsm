@@ -18,8 +18,13 @@
                 {% endfor %}
             {% endif %}
         </div>
-        <div class="col-md-6 col-md-offset-2 form-group">
+        <div class="col-md-6 col-md-offset-2 form-group {% if form.flight_lesson.errors %} has-error {% endif %}">
             {{ form.flight_lesson.label() }} {{ form.flight_lesson(class='form-control') }}
+            {% if form.flight_lesson.errors %}
+                {% for error in form.flight_lesson.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="col-md-2 form-group">
             {{ form.aircraft.label() }} {{ form.aircraft(class='form-control') }}
