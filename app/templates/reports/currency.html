@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flight School Manager - Report - Graduation{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Currency Report</h1>
+</div>
+<h2>Students</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            Notice
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Actions
+        </th>
+        </thead>
+        <tbody>
+        {% for (student, expiring_thing, date_of_concern, time_till_expiry) in students %}
+        <tr>
+            <td>{{ student.last_name }}, {{ student.first_name }}</td>
+            <td>
+                {% if expiring_thing == 'medical' %}
+                Medical Certificate
+                {% elif expiring_thing == 'student_cert' %}
+                Student Certificate
+                {% elif expiring_thing == 'no_flight' %}
+                No recent flights
+                {% endif %}
+            </td>
+            <td>
+                {% if time_till_expiry <= 0 %}<div class="text-danger">
+                {% elif time_till_expiry <= 15 %}<div class="text-warning">
+                {% else %}<div>
+                {% endif %}
+                {% if expiring_thing == 'no_flight' %}
+                last flight
+                {% elif time_till_expiry < 0 %}
+                expired
+                {% else %}
+                expires
+                {% endif %}
+                on
+                {{ date_of_concern }} <em>
+                {% if time_till_expiry < 0 %}({{ -1*time_till_expiry }} day{% if time_till_expiry < -1 %}s{% endif %} ago)
+                {% elif time_till_expiry > 0 %}(in {{ time_till_expiry }} day{% if time_till_expiry > 1 %}s{% endif %})
+                {% else %}
+                (today)
+                {% endif %}
+                </em>
+                {% if time_till_expiry <= 0 %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                {% elif time_till_expiry <= 15 %}<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                {% endif %}
+                </div>
+            </td>
+            <td>
+                {% if expiring_thing == 'no_flight' %}
+                <a href="/view/students/{{ student.id }}">View/edit student details</a> | <a href="/report/logbook?student_id={{ student.id }}&from_date={{ date_of_concern }}&to_date={{ date_of_concern }}">View student logbook</a>
+                {% else %}
+                <a href="/view/students/{{ student.id }}">View/edit student details</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<h2>Instructors</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            Item
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Actions
+        </th>
+        </thead>
+        <tbody>
+        {% for (instructor, expiring_thing, date_of_concern, time_till_expiry) in instructors %}
+        <tr>
+            <td>{{ instructor.last_name }}, {{ instructor.first_name }}</td>
+            <td>
+                {% if expiring_thing == 'medical' %}
+                Medical Certificate
+                {% elif expiring_thing == 'flight_review' %}
+                Flight Review
+                {% elif expiring_thing == 'bfr' %}
+                BFR
+                {% elif expiring_thing == 'ipc' %}
+                IPC
+                {% elif expiring_thing == 'night_currency' %}
+                Night Currency
+                {% elif expiring_thing == 'me_currency' %}
+                ME Currency
+                {% elif expiring_thing == 'tail_wheel_currency' %}
+                Tail Wheel Currency
+                {% endif %}
+            </td>
+            <td>
+                {% if time_till_expiry <= 0 %}<div class="text-danger">
+                {% elif time_till_expiry <= 15 %}<div class="text-warning">
+                {% else %}<div>
+                {% endif %}
+                {% if time_till_expiry < 0 %}
+                expired
+                {% else %}
+                expires
+                {% endif %}
+                on
+                {{ date_of_concern }} <em>
+                {% if time_till_expiry < 0 %}({{ -1*time_till_expiry }} day{% if time_till_expiry < -1 %}s{% endif %} ago)
+                {% elif time_till_expiry > 0 %}(in {{ time_till_expiry }} day{% if time_till_expiry > 1 %}s{% endif %})
+                {% else %}
+                (today)
+                {% endif %}
+                </em>
+                {% if time_till_expiry <= 0 %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                {% elif time_till_expiry <= 15 %}<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                {% endif %}
+                </div>
+            </td>
+            <td>
+                <a href="/view/instructors/{{ instructor.id }}">View/edit instructor details</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

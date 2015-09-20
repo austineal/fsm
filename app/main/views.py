@@ -1,6 +1,6 @@
 from __future__ import division
 
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from collections import defaultdict, namedtuple
 from sqlalchemy import func
 from flask import render_template, flash, redirect, url_for, request, current_app, make_response
@@ -714,3 +714,79 @@ def logbook_report():
         return render_template('reports/logbook.html', form=form, flights=flights)
     else:
         return render_template('reports/logbook.html', form=form)
+
+
+@main.route('/report/currency', methods=['GET', 'POST'])
+@login_required
+def currency_report():
+
+    td = date.today()
+    td_plus_30 = td + timedelta(days=30)
+    td_minus_30 = td - timedelta(days=30)
+
+    ## students
+    students = []
+
+    # medical
+    students_medical = Student.query.filter(Student.medical_expires <= td_plus_30)
+    for student in students_medical:
+        students.append((student, 'medical', student.medical_expires, (student.medical_expires - td).days))
+
+    # student certificate
+    students_certificate = Student.query.filter(Student.student_certificate_expires <= td_plus_30)
+    for student in students_certificate:
+        students.append((student, 'student_cert', student.student_certificate_expires, (student.student_certificate_expires - td).days))
+
+    # last flight
+    # NOTE: will ignore students who have not logged *any* flights
+    student_flight = Student.query.filter(Student.active).join(Student.flights)
+    for student in student_flight:
+        print student.id, student.first_name, student.last_name
+        most_recent_flight = sorted(student.flights, key=lambda x: x.date)[-1]
+        if most_recent_flight.date <= td_minus_30:
+            students.append((student, 'no_flight', most_recent_flight.date, (most_recent_flight.date - td).days))
+
+    ## instructors
+    instructors = []
+
+    # medical
+    instructors_medical = Instructor.query.filter(Instructor.medical_expires <= td_plus_30)
+    for instructor in instructors_medical:
+        instructors.append((instructor, 'medical', instructor.medical_expires, (instructor.medical_expires - td).days))
+
+    # flight review
+    instructors_flight_review = Instructor.query.filter(Instructor.flight_review_expires <= td_plus_30)
+    for instructor in instructors_flight_review:
+        instructors.append((instructor, 'flight_review', instructor.flight_review_expires, (instructor.flight_review_expires - td).days))
+
+    # bfr
+    instructors_bfr = Instructor.query.filter(Instructor.bfr_expires <= td_plus_30)
+    for instructor in instructors_bfr:
+        instructors.append((instructor, 'bfr', instructor.bfr_expires, (instructor.bfr_expires - td).days))
+
+    # ipc
+    instructors_ipc = Instructor.query.filter(Instructor.ipc_expires <= td_plus_30)
+    for instructor in instructors_ipc:
+        instructors.append((instructor, 'ipc', instructor.ipc_expires, (instructor.ipc_expires - td).days))
+
+    # night currency
+    instructors_night_currency = Instructor.query.filter(Instructor.night_currency_end_date <= td_plus_30)
+    for instructor in instructors_night_currency:
+        instructors.append((instructor, 'night_currency', instructor.night_currency_end_date, (instructor.night_currency_end_date - td).days))
+
+    # me currency
+    instructors_me_currency = Instructor.query.filter(Instructor.me_currency_end_date <= td_plus_30)
+    for instructor in instructors_me_currency:
+        instructors.append((instructor, 'me_currency', instructor.me_currency_end_date, (instructor.me_currency_end_date - td).days))
+
+    # tail wheel currency
+    instructors_tailwheel_currency = Instructor.query.filter(Instructor.tailwheel_currency_end_date <= td_plus_30)
+    for instructor in instructors_tailwheel_currency:
+        instructors.append((instructor, 'tail_wheel_currency', instructor.tailwheel_currency_end_date, (instructor.tailwheel_currency_end_date - td).days))
+
+    return render_template('reports/currency.html',
+                           students=sorted(students,
+                                           key=lambda x: (x[2], x[1], x[0].last_name, x[0].first_name)),
+                           instructors=sorted(instructors,
+                                              key=lambda x: (x[2], x[1], x[0].last_name, x[0].first_name))
+                           )
