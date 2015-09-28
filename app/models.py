@@ -137,7 +137,7 @@ class TSAEligibilityDoc(db.Model):
 
 class Instructor(db.Model):
     __tablename__ = 'instructors'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(64))
     tsa_eligibility_doc_id = db.Column(db.Integer, db.ForeignKey('tsa_docs.id'))

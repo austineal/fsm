@@ -174,12 +174,12 @@ def add_instructor():
                                 ipc_expires=form.ipc_expires.data,
                                 checkout_141=form.checkout_141.data,
                                 checkout_141_date=form.checkout_141_date.data,
-                                night_currency_start_date=form.night_currency_start_date,
-                                night_currency_end_date=form.night_currency_end_date,
-                                me_currency_start_date=form.me_currency_start_date,
-                                me_currency_end_date=form.me_currency_end_date,
-                                tailwheel_currency_start_date=form.tailwheel_currency_start_date,
-                                tailwheel_currency_end_date=form.tailwheel_currency_end_date)
+                                night_currency_start_date=form.night_currency_start_date.data,
+                                night_currency_end_date=form.night_currency_end_date.data,
+                                me_currency_start_date=form.me_currency_start_date.data,
+                                me_currency_end_date=form.me_currency_end_date.data,
+                                tailwheel_currency_start_date=form.tailwheel_currency_start_date.data,
+                                tailwheel_currency_end_date=form.tailwheel_currency_end_date.data)
         db.session.add(instructor)
         db.session.commit()
         flash('New instructor added.')
