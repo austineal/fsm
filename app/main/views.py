@@ -146,6 +146,16 @@ def view_student(student_id):
     return render_template('edit_student.html', form=form)
 
 
+@main.route('/delete/students/<student_id>', methods=['GET', 'POST'])
+@login_required
+def delete_student(student_id):
+    student = Student.query.filter_by(id=student_id).first()
+    db.session.delete(student)
+    db.session.commit()
+    flash('Student deleted.')
+    return redirect(url_for('.view_students'))
+
+
 @main.route('/add/instructor', methods=['GET', 'POST'])
 @login_required
 def add_instructor():
@@ -238,6 +248,16 @@ def view_instructor(instructor_id):
     form.tailwheel_currency_end_date.data = instructor.tailwheel_currency_end_date
 
     return render_template('edit_instructor.html', form=form)
+
+
+@main.route('/delete/instructors/<instructor_id>', methods=['GET', 'POST'])
+@login_required
+def delete_instructors(instructor_id):
+    instructor = Instructor.query.filter_by(id=instructor_id).first()
+    db.session.delete(instructor)
+    db.session.commit()
+    flash('Instructor deleted.')
+    return redirect(url_for('.view_instructors'))
 
 
 @main.route('/add/lesson', methods=['GET', 'POST'])

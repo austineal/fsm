@@ -26,7 +26,7 @@
         <tr>
             <td>{{ student.first_name }}</td>
             <td>{{ student.last_name }}</td>
-            <td><a href="/view/students/{{ student.id }}">view/edit details</a> | view flights</td>
+            <td><a href="/view/students/{{ student.id }}">view/edit details</a> | <a href="/delete/students/{{ student.id }}" onclick="return confirm('Are you sure you want to delete this student?')">delete</a></td>
         </tr>
         {%  endfor %}
         </tbody>
