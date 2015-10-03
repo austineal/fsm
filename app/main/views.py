@@ -450,6 +450,14 @@ def view_flight(flight_id):
             flight.ndb = form.ndb.data
             flight.landings_day = form.landings_day.data
             flight.landings_night = form.landings_night.data
+            if form.complete.raw_data[0] == 'True':
+                flight.complete = True
+            else:
+                flight.complete = False
+            if flight.complete:
+                flight.completed_objectives = ''
+            else:
+                flight.completed_objectives = form.completed_objectives.data
             flight.calculate_log_time()
             db.session.add(flight)
             db.session.commit()
@@ -484,6 +492,8 @@ def view_flight(flight_id):
     form.ndb.data = flight.ndb
     form.landings_day.data = flight.landings_day
     form.landings_night.data = flight.landings_night
+    form.complete.data = flight.complete
+    form.completed_objectives.data = flight.completed_objectives
     return render_template('edit_flight.html', form=form)
 
 
