@@ -3,6 +3,11 @@
 
 {% block title %}Flight School Manager - Add Flight{% endblock %}
 
+{% block head %}
+{{ super () }}
+<script src="/static/edit_flight.js"></script>
+{% endblock %}
+
 {% block page_content %}
 <div class="page-header">
     <h1>Add Flight</h1>
@@ -151,13 +156,21 @@
             {{ form.landings_night(class='form-control') }}
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-3 form-group">
+            {{ form.complete.label(class='sr-only') }}
+            {% for subfield in form.complete %}
+            {{ subfield }} {{ subfield.label }}<br/>
+            {% endfor %}
+        </div>
+        <div class="col-md-4 form-group {% if form.completed_objectives.errors %}has-error{% endif %}" id="obj_text" {% if form.completed_objectives.data == None or form.completed_objectives.data == ''%}style="display: none;"{% endif %}>
+            {{ form.completed_objectives.label() }}
+            {{ form.completed_objectives(class='form-control') }}
+            {% for error in form.completed_objectives.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
+        </div>
+    </div>
     {{ form.add_flight(class='btn btn-default') }}
 </form>
 {% endblock %}
-
-<!--
-    instrument_hood = FloatField('Instrument Hood', default=0)
-    instrument_actual = FloatField('Instrument Actual', default=0)
-    ftd = FloatField('FTD', default=0)
-    pcatd = FloatField('PCATD', default=0)
--->

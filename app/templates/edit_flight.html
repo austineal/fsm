@@ -3,16 +3,16 @@
 
 {% block title %}Flight School Manager - Edit Flight{% endblock %}
 
+{% block head %}
+{{ super () }}
+<script src="/static/edit_flight.js"></script>
+{% endblock %}
+
 {% block page_content %}
 <div class="page-header">
     <h1>Edit Flight</h1>
 </div>
-<!--
-<div class="col-md-4">
-    {{ wtf.quick_form(form) }}
-</div>
--->
-<form class="form" method="POST" role="form">
+<form id="edit_flight_form" class="form" method="POST" role="form">
     {{ form.hidden_tag() }}
     <div class="row">
         <div class="col-md-2 form-group {% if form.date.errors %} has-error {% endif %}">
@@ -149,6 +149,21 @@
         <div class="col-md-1 form-group">
             {{ form.landings_night.label() }}
             {{ form.landings_night(class='form-control') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 form-group">
+            {{ form.complete.label(class='sr-only') }}
+            {% for subfield in form.complete %}
+            {{ subfield }} {{ subfield.label }}<br/>
+            {% endfor %}
+        </div>
+        <div class="col-md-4 form-group {% if form.completed_objectives.errors %}has-error{% endif %}" id="obj_text" {% if not (form.completed_objectives.errors or form.completed_objectives.data != '') %}style="display: none;"{% endif %}>
+            {{ form.completed_objectives.label() }}
+            {{ form.completed_objectives(class='form-control') }}
+            {% for error in form.completed_objectives.errors %}
+                    <span class="help-block">[{{ error }}]</span><br/>
+                {% endfor %}
         </div>
     </div>
     {{ form.add_flight(class='btn btn-default') }}

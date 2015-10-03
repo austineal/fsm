@@ -119,6 +119,9 @@ class AddFlightForm(Form):
     ndb = IntegerField('NDB', default=0)
     landings_day = IntegerField('Landings Day', default=0)
     landings_night = IntegerField('Landings Night', default=0)
+    complete = RadioField(choices=[(True, 'Lesson completed'), (False, 'Lesson not completed')], default=True, coerce=bool)
+    completed_objectives = TextAreaField('Objectives completed this lesson')
+
     add_flight = SubmitField('Save Flight')
 
     def __init__(self, *args, **kwargs):
@@ -132,6 +135,18 @@ class AddFlightForm(Form):
                                       for lesson in FlightLesson.query.order_by(FlightLesson.number).all()]
         self.aircraft.choices = [(plane.id, plane.tail_number) for plane
                                  in Aircraft.query.order_by(Aircraft.tail_number).all()]
+
+    def validate(self):
+        rv = Form.validate(self)
+        if not rv:
+            return False
+
+        if self.complete.raw_data[0] == 'False':
+            if not self.completed_objectives.data:
+                self.completed_objectives.errors.append('Please specify which objectives were completed in this lesson.')
+                return False
+
+        return True
 
 
 class AddTestTypeForm(Form):

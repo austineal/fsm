@@ -248,6 +248,8 @@ class Flight(db.Model):
     ndb = db.Column(db.Integer)
     landings_day = db.Column(db.Integer)
     landings_night = db.Column(db.Integer)
+    complete = db.Column(db.Boolean)
+    completed_objectives = db.Column(db.String(32000))
 
     # these are calculated from the raw values above
     student_solo_time = db.Column(db.Float)
