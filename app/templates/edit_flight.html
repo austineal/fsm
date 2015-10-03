@@ -158,7 +158,7 @@
             {{ subfield }} {{ subfield.label }}<br/>
             {% endfor %}
         </div>
-        <div class="col-md-4 form-group {% if form.completed_objectives.errors %}has-error{% endif %}" id="obj_text" {% if not (form.completed_objectives.errors or form.completed_objectives.data != '') %}style="display: none;"{% endif %}>
+        <div class="col-md-4 form-group {% if form.completed_objectives.errors %}has-error{% endif %}" id="obj_text" {% if (not form.completed_objectives.errors) and (form.completed_objectives.data == None or form.completed_objectives.data == '')%}style="display: none;"{% endif %}>
             {{ form.completed_objectives.label() }}
             {{ form.completed_objectives(class='form-control') }}
             {% for error in form.completed_objectives.errors %}
